@@ -12,10 +12,10 @@ function Navbar() {
           <Link to="/friends">Friends</Link>
         </li>
         <li>
-          <Link to="/settings">Friends</Link>
+          <Link to="/settings">settings</Link>
         </li>
         <li>
-          <Link to="/account">Friends</Link>
+          <Link to="/account">account</Link>
         </li>
       </ul>
     </nav>
