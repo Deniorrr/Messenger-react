@@ -1,17 +1,33 @@
 import "./components/style/app.scss";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Aside from "./components/pages/Home/Aside";
+import Messenger from "./components/pages/Home/Messenger";
 
 function App() {
+  const navigate = useNavigate();
+  const [conversationId, setConversationId] = useState(0);
+
+  const displayConversation = (conversationId) => {
+    setConversationId(conversationId);
+    navigate("/");
+  };
   return (
     <>
       <Navbar />
       <div id="container">
-        <Aside />
+        <Aside
+          displayConversation={(conversationId) => {
+            displayConversation(conversationId);
+          }}
+        />
         <main>
           <Routes>
-            <Route path="/" element={<div>XD</div>}></Route>
+            <Route
+              path="/"
+              element={<Messenger conversationId={conversationId} />}
+            ></Route>
             <Route path="/friends" element={<div>friends</div>}></Route>
             <Route path="/settings" element={<div>settings</div>}></Route>
             <Route path="/account" element={<div>account</div>}></Route>
@@ -21,6 +37,10 @@ function App() {
     </>
   );
 }
+
+//TODO
+
+//create css modules
 
 // IDEAS
 

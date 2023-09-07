@@ -4,10 +4,11 @@ import homeIcon from "../assets/home.svg";
 import friendsIcon from "../assets/users.svg";
 import settingsIcon from "../assets/settings.svg";
 import accountIcon from "../assets/portrait.svg";
+import styles from "./style/navbar.module.scss";
 
 function Navbar() {
   return (
-    <nav>
+    <nav className={styles.navbar}>
       <section id="left">Logo</section>
       <section id="center">
         <ul>
@@ -15,7 +16,9 @@ function Navbar() {
             <NavLink
               to="/"
               title="Home"
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              className={({ isActive }) =>
+                isActive ? styles["active-link"] : ""
+              }
             >
               <figure>
                 <img src={homeIcon} alt="Home" />
@@ -26,7 +29,9 @@ function Navbar() {
             <NavLink
               to="/friends"
               title="Friends"
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              className={({ isActive }) =>
+                isActive ? styles["active-link"] : ""
+              }
             >
               <figure>
                 <img src={friendsIcon} alt="Friends" />
@@ -37,7 +42,9 @@ function Navbar() {
             <NavLink
               to="/settings"
               title="Settings"
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              className={({ isActive }) =>
+                isActive ? styles["active-link"] : ""
+              }
             >
               <figure>
                 <img src={settingsIcon} alt="Settings" />
@@ -50,7 +57,7 @@ function Navbar() {
         <NavLink
           to="/account"
           title="Account"
-          className={({ isActive }) => (isActive ? "active-link" : "")}
+          className={({ isActive }) => (isActive ? styles["active-link"] : "")}
         >
           <figure>
             <img src={accountIcon} alt="Account" />

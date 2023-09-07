@@ -1,9 +1,13 @@
 import React from "react";
 
-function ConversationSingle(props) {
+function ConversationListSingle(props) {
   const details = props.details;
   return (
-    <div>
+    <div
+      onClick={() => {
+        props.displayConversation(details.id);
+      }}
+    >
       <p>
         {details.name} {details.surname}
       </p>
@@ -12,4 +16,4 @@ function ConversationSingle(props) {
   );
 }
 
-export default ConversationSingle;
+export default ConversationListSingle;
