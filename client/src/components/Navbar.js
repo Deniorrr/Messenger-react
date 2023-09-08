@@ -20,9 +20,9 @@ function Navbar() {
                 isActive ? styles["active-link"] : ""
               }
             >
-              <figure>
-                <img src={homeIcon} alt="Home" />
-              </figure>
+              <figure
+                className={`${styles["svg-icon"]} ${styles["home-icon"]}`}
+              ></figure>
             </NavLink>
           </li>
           <li>
@@ -33,9 +33,9 @@ function Navbar() {
                 isActive ? styles["active-link"] : ""
               }
             >
-              <figure>
-                <img src={friendsIcon} alt="Friends" />
-              </figure>
+              <figure
+                className={`${styles["svg-icon"]} ${styles["friends-icon"]}`}
+              ></figure>
             </NavLink>
           </li>
           <li>
@@ -46,9 +46,9 @@ function Navbar() {
                 isActive ? styles["active-link"] : ""
               }
             >
-              <figure>
-                <img src={settingsIcon} alt="Settings" />
-              </figure>
+              <figure
+                className={`${styles["svg-icon"]} ${styles["settings-icon"]}`}
+              ></figure>
             </NavLink>
           </li>
         </ul>
@@ -59,9 +59,9 @@ function Navbar() {
           title="Account"
           className={({ isActive }) => (isActive ? styles["active-link"] : "")}
         >
-          <figure>
-            <img src={accountIcon} alt="Account" />
-          </figure>
+          <figure
+            className={`${styles["svg-icon"]} ${styles["account-icon"]}`}
+          ></figure>
         </NavLink>
       </section>
     </nav>

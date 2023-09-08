@@ -23,6 +23,25 @@
       height: 30px;
     }
   }
+  .home-icon {
+    mask: url(../../assets/home.svg);
+  }
+  .friends-icon {
+    mask: url(../../assets/users.svg);
+  }
+  .settings-icon {
+    mask: url(../../assets/settings.svg);
+  }
+  .account-icon {
+    mask: url(../../assets/portrait.svg);
+  }
+  .svg-icon {
+    height: 30px;
+    width: 30px;
+    background-color: #ccc;
+    mask-size: cover;
+  }
+
   a {
     text-decoration: none;
     display: block;
@@ -36,6 +55,8 @@
   }
   .active-link {
     border-top: 5px solid $color-primary;
-    background-color: $color-primary-transparent;
+    figure {
+      background-color: $color-primary;
+    }
   }
 }
