@@ -63,10 +63,11 @@ function ConversationList(props) {
 
   return (
     <div id={styles["conversation-list"]}>
-      <div className={styles["search-bar"]}>
-        <figure>
-          <img src={searchIcon}></img>
-        </figure>
+      <div
+        className={styles["search-bar"]}
+        onClick={() => props.changeAsideVisibility()}
+      >
+        <img src={searchIcon}></img>
         <input type="text"></input>
       </div>
       <ul>{renderConversationList()}</ul>

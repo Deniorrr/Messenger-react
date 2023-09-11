@@ -14,11 +14,7 @@ body {
 #container {
   display: flex;
   height: 100vh;
-  aside {
-    background-color: $color-dark-1;
-    width: 20em;
-    padding-top: 80px;
-  }
+
   main {
     width: 100%;
     background-color: $color-dark-2;

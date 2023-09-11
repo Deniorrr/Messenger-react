@@ -10,10 +10,15 @@ function ConversationListSingle(props) {
       }}
       className={props.isActive ? styles.active : ""}
     >
-      <p>
-        {details.name} {details.surname}
-      </p>
-      <p>{details.lastMessage}</p>
+      <div className={styles.portrait}>
+        {details.name[0] + details.surname[0]}
+      </div>
+      <div className={styles.details}>
+        <p>
+          {details.name} {details.surname}
+        </p>
+        <p>{details.lastMessage}</p>
+      </div>
     </li>
   );
 }
