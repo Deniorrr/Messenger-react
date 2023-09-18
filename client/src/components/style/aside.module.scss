@@ -4,6 +4,7 @@ aside {
   background-color: $color-dark-1;
   padding: 0 20px;
   width: 300px;
+  min-width: 300px;
   transition-duration: 0.4s;
   padding-top: 80px;
   overflow: visible;
@@ -11,9 +12,28 @@ aside {
   flex-direction: column;
   .button-wrapper {
     button {
+      position: relative;
+      left: 100%;
+      transform: translateX(-100%);
+      transition-duration: 0.4s;
       margin: 15px 0;
       display: block;
-      margin-left: auto;
+      height: 40px;
+      width: 40px;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      background-color: $color-dark-2;
+      border-radius: 5px;
+      outline: 2px solid $color-primary;
+      img {
+        height: 100%;
+        transition-duration: 0.4s;
+        transform: rotate(180deg);
+      }
+    }
+    button:hover {
+      background-color: $color-primary-transparent;
     }
   }
   #conversation-list {
@@ -69,9 +89,23 @@ aside {
           color: #333;
         }
         .details {
-          text-overflow: ellipsis;
           white-space: nowrap;
-          width: 80px;
+          width: 100%;
+          padding-left: 7px;
+          header {
+            display: flex;
+            justify-content: space-between;
+          }
+          .name {
+            font-weight: bold;
+          }
+          .time {
+            color: #aaa;
+            padding-right: 5px;
+          }
+          .message {
+            font-weight: lighter;
+          }
         }
       }
       li:hover {
@@ -86,7 +120,19 @@ aside {
   }
 }
 .aside#hidden {
-  width: 105px;
+  min-width: 0px;
+  padding: 0 5px;
+  padding-top: 80px;
+  .button-wrapper {
+    button {
+      left: 50%;
+      transform: translateX(-50%);
+      img {
+        transform: rotate(0deg);
+      }
+    }
+  }
+  width: 75px;
   .search-bar {
     input {
       color: $color-dark-1;

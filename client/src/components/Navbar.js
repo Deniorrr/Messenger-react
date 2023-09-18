@@ -1,9 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import homeIcon from "../assets/home.svg";
-import friendsIcon from "../assets/users.svg";
-import settingsIcon from "../assets/settings.svg";
-import accountIcon from "../assets/portrait.svg";
 import styles from "./style/navbar.module.scss";
 
 function Navbar() {

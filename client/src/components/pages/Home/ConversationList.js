@@ -22,7 +22,7 @@ function ConversationList(props) {
       surname: "Poczęty",
       color: "#ff00ff",
       lastMessage: "siema co tam",
-      timestamp: "30 min",
+      timestamp: "12:30",
       id: 1,
     },
     {
@@ -30,7 +30,7 @@ function ConversationList(props) {
       surname: "Poczęty",
       color: "#ff00ff",
       lastMessage: "siema co tam",
-      timestamp: "30 min",
+      timestamp: "12:30",
       id: 2,
     },
     {
@@ -38,7 +38,7 @@ function ConversationList(props) {
       surname: "Poczęty",
       color: "#ff00ff",
       lastMessage: "siema co tam",
-      timestamp: "30 min",
+      timestamp: "12:30",
       id: 3,
     },
   ];
@@ -67,7 +67,7 @@ function ConversationList(props) {
         className={styles["search-bar"]}
         onClick={() => props.changeAsideVisibility()}
       >
-        <img src={searchIcon}></img>
+        <img src={searchIcon} alt="searchIcon"></img>
         <input type="text"></input>
       </div>
       <ul>{renderConversationList()}</ul>

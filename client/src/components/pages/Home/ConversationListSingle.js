@@ -13,11 +13,15 @@ function ConversationListSingle(props) {
       <div className={styles.portrait}>
         {details.name[0] + details.surname[0]}
       </div>
+
       <div className={styles.details}>
-        <p>
-          {details.name} {details.surname}
-        </p>
-        <p>{details.lastMessage}</p>
+        <header>
+          <p className={styles.name}>
+            {details.name} {details.surname}
+          </p>
+          <p className={styles.time}>{details.timestamp}</p>
+        </header>
+        <p className={styles.message}>{details.lastMessage}</p>
       </div>
     </li>
   );

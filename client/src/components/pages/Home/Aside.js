@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import ConversationList from "./ConversationList";
+import arrowIcon from "../../../assets/arrow.svg";
 import styles from "../../style/aside.module.scss";
 
 function Aside(props) {
@@ -15,7 +16,9 @@ function Aside(props) {
   return (
     <aside className={styles.aside} id={isAsideHidden ? styles.hidden : ""}>
       <div className={styles["button-wrapper"]}>
-        <button onClick={() => changeAsideVisibility()}>SZ</button>
+        <button onClick={() => changeAsideVisibility()}>
+          <img src={arrowIcon} alt="arrow Icon" />
+        </button>
       </div>
       <ConversationList
         displayConversation={(conversationId) => {
