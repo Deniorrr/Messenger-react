@@ -1,0 +1,67 @@
+@import "./variables";
+
+.messenger {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  .friend-profile-bar {
+    color: #fff;
+  }
+  .messages {
+    .message {
+      p {
+        margin: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 1rem;
+        background-color: #444;
+      }
+    }
+    .friend-message {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .my-message {
+      display: flex;
+      justify-content: flex-end;
+      p {
+        background-color: $color-primary-dark;
+      }
+    }
+  }
+  .message-input {
+    width: 100%;
+    display: flex;
+    input {
+      font-family: "Kanit", sans-serif;
+      margin: 1rem;
+      margin-right: 0;
+      width: 100%;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 1rem 0 0 1rem;
+      background-color: #444;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+    input:focus {
+      background-color: #555;
+    }
+    button {
+      cursor: pointer;
+      margin: 1rem 0;
+      padding: 0.2rem 0.5rem;
+      background-color: #444;
+      border: none;
+      border-radius: 0 1rem 1rem 0;
+      img {
+        height: 2rem;
+        margin: 2px;
+      }
+    }
+    button:hover {
+      background-color: #555;
+    }
+  }
+}

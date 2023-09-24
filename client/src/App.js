@@ -1,5 +1,5 @@
 import "./components/style/app.scss";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Aside from "./components/pages/Home/Aside";
@@ -15,24 +15,33 @@ function App() {
   };
   return (
     <>
-      <Navbar />
       <div id="container">
-        <Aside
-          displayConversation={(conversationId) => {
-            displayConversation(conversationId);
-          }}
-        />
-        <main>
-          <Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Aside
+                  displayConversation={(conversationId) => {
+                    displayConversation(conversationId);
+                  }}
+                />
+                <Navbar />
+              </>
+            }
+          >
             <Route
               path="/"
               element={<Messenger conversationId={conversationId} />}
-            ></Route>
-            <Route path="/friends" element={<div>friends</div>}></Route>
-            <Route path="/settings" element={<div>settings</div>}></Route>
-            <Route path="/account" element={<div>account</div>}></Route>
-          </Routes>
-        </main>
+            />
+            <Route path="friends" element={<main>friends</main>} />
+            <Route path="settings" element={<main>settings</main>} />
+            <Route path="account" element={<main>account</main>} />
+          </Route>
+          <Route path="/login" element={<main>login</main>} />
+          <Route path="/register" element={<main>register</main>} />
+          <Route path="*" element={<main>404</main>} />
+        </Routes>
       </div>
     </>
   );

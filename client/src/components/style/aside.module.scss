@@ -1,4 +1,4 @@
-@import "./colors";
+@import "./variables";
 
 aside {
   background-color: $color-dark-1;
@@ -10,6 +10,7 @@ aside {
   overflow: visible;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   .button-wrapper {
     button {
       position: relative;
