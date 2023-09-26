@@ -15,6 +15,7 @@
         padding: 0.5rem;
         border-radius: 1rem;
         background-color: #444;
+        background-color: $color-primary-dark;
       }
     }
     .friend-message {
@@ -25,43 +26,53 @@
       display: flex;
       justify-content: flex-end;
       p {
-        background-color: $color-primary-dark;
+        background-color: $color-secondary;
       }
     }
   }
   .message-input {
     width: 100%;
     display: flex;
+    padding: 1rem;
     input {
       font-family: "Kanit", sans-serif;
       margin: 1rem;
       margin-right: 0;
+      padding-left: 0.5rem;
       width: 100%;
-      padding: 0.5rem;
       border: none;
       border-radius: 1rem 0 0 1rem;
-      background-color: #444;
+      background-color: $color-dark-2;
       color: #fff;
       font-size: 16px;
-      outline: none;
+      outline: 2px solid $color-secondary;
     }
     input:focus {
-      background-color: #555;
+      background-color: $color-secondary-dark;
     }
     button {
+      margin-right: 1rem;
       cursor: pointer;
       margin: 1rem 0;
       padding: 0.2rem 0.5rem;
-      background-color: #444;
+      background-color: $color-dark-2;
       border: none;
       border-radius: 0 1rem 1rem 0;
-      img {
+      outline: 2px solid $color-secondary;
+      .svg-icon {
         height: 2rem;
+        width: 2rem;
+        mask: url(../../assets/send.svg);
+        background-color: #ccc;
         margin: 2px;
+        mask-size: contain;
       }
     }
     button:hover {
-      background-color: #555;
+      background-color: $color-secondary-dark;
+      .svg-icon {
+        background-color: $color-primary;
+      }
     }
   }
 }

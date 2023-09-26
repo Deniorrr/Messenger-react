@@ -1,7 +1,7 @@
 @import "./variables";
 
 aside {
-  background-color: $color-dark-1;
+  background-color: $color-secondary-dark;
   padding: 0 20px;
   width: 300px;
   min-width: 300px;
@@ -34,7 +34,7 @@ aside {
       }
     }
     button:hover {
-      background-color: $color-primary-transparent;
+      background-color: $color-secondary-transparent;
     }
   }
   #conversation-list {
@@ -110,12 +110,12 @@ aside {
         }
       }
       li:hover {
-        background-color: $color-primary-transparent;
+        background-color: $color-secondary-transparent;
       }
 
       li.active {
-        border: 2px solid $color-primary;
-        background-color: $color-primary-transparent;
+        border: 2px solid $color-secondary;
+        background-color: $color-secondary-transparent;
       }
     }
   }

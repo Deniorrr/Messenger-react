@@ -17,8 +17,8 @@ function MessageInput(props) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button>
-        <img src={sendIcon} alt="send" onClick={() => sendMessage()} />
+      <button onClick={() => sendMessage()}>
+        <figure className={styles["svg-icon"]}></figure>
       </button>
     </div>
   );

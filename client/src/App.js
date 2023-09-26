@@ -1,9 +1,11 @@
 import "./components/style/app.scss";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Aside from "./components/pages/Home/Aside";
 import Messenger from "./components/pages/Home/Messenger";
+import Login from "./components/pages/Login/Login";
+import Register from "./components/pages/Login/Register";
 
 function App() {
   const navigate = useNavigate();
@@ -38,8 +40,8 @@ function App() {
             <Route path="settings" element={<main>settings</main>} />
             <Route path="account" element={<main>account</main>} />
           </Route>
-          <Route path="/login" element={<main>login</main>} />
-          <Route path="/register" element={<main>register</main>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<main>404</main>} />
         </Routes>
       </div>
