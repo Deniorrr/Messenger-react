@@ -2,20 +2,74 @@
 
 .form-wrapper {
   background-image: url(../../assets/neon-background.jpg);
+  background-attachment: fixed;
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 100%;
+  height: 100%;
+  overflow: auto;
   .form {
     backdrop-filter: blur(20px);
-    width: 1000px;
-    height: 600px;
-    background-color: #000000aa;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+    background-color: #000000cc;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 50px;
     border-radius: 40px;
     h1 {
+      padding: 20px;
+    }
+    input {
+      background: none;
+      border: 2px solid #777;
+      border-radius: 15px;
+      color: #fff;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.3rem;
+      outline: none;
+      &:focus {
+        border: 2px solid #fff;
+      }
+    }
+    button {
+      background: none;
+      border: 2px solid #777;
+      border-radius: 15px;
+      color: #fff;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.4rem;
+      outline: none;
+      cursor: pointer;
+      &:hover {
+        background-color: #777;
+      }
+    }
+    .names {
+      display: flex;
+      input {
+        width: 100%;
+      }
+    }
+    p {
+      font-size: 1.1rem;
+      a {
+        color: $color-secondary;
+      }
+    }
+    h1 {
+    }
+    @media screen and (max-width: 500px) {
+      .form {
+        padding: 5px;
+      }
+      .names {
+        flex-direction: column;
+        padding-right: 20px;
+      }
     }
     //border: 3px solid $color-primary;
   }
