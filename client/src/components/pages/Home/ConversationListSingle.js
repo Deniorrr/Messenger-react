@@ -6,22 +6,22 @@ function ConversationListSingle(props) {
   return (
     <li
       onClick={() => {
-        props.displayConversation(details.id);
+        props.displayConversation(details.user.id);
       }}
       className={props.isActive ? styles.active : ""}
     >
       <div className={styles.portrait}>
-        {details.name[0] + details.surname[0]}
+        {details.user.firstName[0] + details.user.lastName[0]}
       </div>
 
       <div className={styles.details}>
         <header>
           <p className={styles.name}>
-            {details.name} {details.surname}
+            {details.firstName} {details.user.lastName}
           </p>
-          <p className={styles.time}>{details.timestamp}</p>
+          <p className={styles.time}>{details.lastMessage.when}</p>
         </header>
-        <p className={styles.message}>{details.lastMessage}</p>
+        <p className={styles.message}>{details.lastMessage.message}</p>
       </div>
     </li>
   );

@@ -1,7 +1,8 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
+import axios from "axios";
 
 function Messenger(props) {
   if (props.conversationId < 1) return <main>Select a conversation</main>;
