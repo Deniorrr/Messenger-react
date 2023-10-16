@@ -1,7 +1,8 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
-import axios from "axios";
+import { ApiContext } from "../../../contexts/ApiContext";
+
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -9,29 +10,15 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPasswd, setConfirmPasswd] = useState("");
 
+  const registerApi = useContext(ApiContext).register;
+
   const register = () => {
-    if (!firstName || !lastName || !email || !password || !confirmPasswd) {
-      alert("Please fill in all fields");
-      return;
-    }
-
-    if (password !== confirmPasswd) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    axios
-      .post("http://localhost:3001/register", {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      })
+    registerApi(firstName, lastName, email, password, confirmPasswd)
       .then((res) => {
         console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 

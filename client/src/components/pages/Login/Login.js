@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
-import axios from "axios";
+//import axios from "axios";
+import { ApiContext } from "../../../contexts/ApiContext";
 
 function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const loginApi = useContext(ApiContext).login;
   const login = () => {
-    axios
-      .post("http://localhost:3001/login", {
-        email: email,
-        password: password,
-      })
+    loginApi(email, password)
       .then((res) => {
-        localStorage.setItem("accessToken", res.data);
-        console.log(res);
+        localStorage.setItem("accessToken", res);
+      })
+      .catch((err) => {
+        alert(err);
       });
   };
 
