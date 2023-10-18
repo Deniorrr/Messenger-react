@@ -11,16 +11,21 @@ const startServer = () => {
 
 app.post("/register", async (req, res) => {
   //try {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const email = req.body.email;
-  const password = req.body.password;
+  const { firstName, lastName, email, password } = req.body;
+  // const firstName = req.body.firstName;
+  // const lastName = req.body.lastName;
+  // const email = req.body.email;
+  // const password = req.body.password;
   DbAccess.registerUser(firstName, lastName, email, password)
     .then((result) => {
       console.log("RESULT", result);
       res.send("ok");
     })
     .catch((err) => {
+      if (err === "EmailIsUsed") {
+        console.log("Email is used");
+        return res.status(409).send("Email is already taken");
+      }
       console.log("ERROR", err);
       res.send(err);
     });
@@ -46,8 +51,30 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/conversations", autenticateToken, async (req, res) => {
-  console.log(req.user);
   DbAccess.getConversations(req.user.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
+app.get("/search-users", autenticateToken, async (req, res) => {
+  const searchInput = req.query.searchInput;
+  DbAccess.searchUsers(searchInput)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
+app.get("/friends", autenticateToken, async (req, res) => {
+  DbAccess.getFriends(req.user.id)
     .then((result) => {
       res.send(result);
     })

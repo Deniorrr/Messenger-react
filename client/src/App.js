@@ -67,14 +67,38 @@ function App() {
     </>
   );
 }
+//DONE
+//nie można dwa razy tego samego maila użyć w bazie
+//wyszukiwanie userów
 
 //TODO
 
-//create css modules
+//wysyłanie zaproszeń userom
+//odbieranie zaproszeń
+//akceptowanie zaproszeń //pokaż w liście znajomych
+//wyświetlanie errorów w loginie i registerze
+//sortuj znajomych po ostatniej wiadomości
+//odrzucanie zaproszeń //nic nie rób?
+//usuwanie userów
+//wygasanie tokenów
+//wysyłanie wiadomości
+//odbieranie wiadomości
+//wyszukiwanie znajomych aside
+//blokowanie userów
+//widok usera, żeby można było wysłać link do profilu
+
+//zmiana statusu usera //online, offline, away
+//zmiana opisu usera
+//ustawienie pseudonimu
+//ustawienie koloru ikony
+//tworzenie grup
+//dodawanie do grup
+//usuwanie z grup
+//usuwanie grup
+//zmiana nazwy grup
 
 // IDEAS
 
 // a todo list for every friendship
-// search through friends on aside
 
 export default App;

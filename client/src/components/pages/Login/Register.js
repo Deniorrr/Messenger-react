@@ -15,10 +15,10 @@ function Register() {
   const register = () => {
     registerApi(firstName, lastName, email, password, confirmPasswd)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
       })
       .catch((err) => {
-        alert(err);
+        return alert(err);
       });
   };
 

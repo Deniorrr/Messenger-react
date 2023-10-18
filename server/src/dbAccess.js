@@ -8,16 +8,26 @@ class DbAccess {
     password: "",
     database: "messenger",
   });
-
   static async registerUser(firstName, lastName, email, password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = `INSERT INTO users (firstName, lastName, email, password) VALUES ("${firstName}", "${lastName}", "${email}", "${hashedPassword}")`;
-    return new Promise((resolve, reject) => {
+    const sql = `SELECT * FROM users WHERE email = "${email}"`;
+    const result = await new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {
         if (err) {
           reject(err);
         }
-        resolve(result);
+        if (result.length > 0) {
+          return reject("EmailIsUsed");
+        }
+        const hashedPassword = bcrypt.hash(password, 10);
+        const sql2 = `INSERT INTO users (firstName, lastName, email, password) VALUES ("${firstName}", "${lastName}", "${email}", "${hashedPassword}")`;
+        return new Promise((resolve, reject) => {
+          this.db.query(sql2, (err, result) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(result);
+          });
+        });
       });
     });
   }
@@ -71,6 +81,26 @@ class DbAccess {
     //     resolve(result);
     //   });
     // });
+  }
+  static async searchUsers(searchInput) {
+    const phrases = searchInput.split(" ");
+
+    let sql = `SELECT * FROM users WHERE`; // UPPER(firstName) LIKE UPPER("%${phrases[0]}%") OR UPPER(lastName) LIKE UPPER("%${phrases[0]}%")`;
+    for (let i = 0; i < phrases.length; i++) {
+      sql += ` UPPER(firstName) LIKE UPPER("%${phrases[i]}%") OR UPPER(lastName) LIKE UPPER("%${phrases[i]}%") OR UPPER(email) LIKE UPPER("%${phrases[i]}%")`;
+      if (i !== phrases.length - 1) {
+        sql += " OR";
+      }
+    }
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
   }
 }
 module.exports = DbAccess;
