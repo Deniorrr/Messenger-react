@@ -42,7 +42,7 @@ function FriendsAdd() {
       .then((data) => {
         changeRequestStatus(userId, true);
       })
-      .error((error) => {
+      .catch((error) => {
         console.log("Request failed", error);
         changeRequestStatus(userId, false);
       });

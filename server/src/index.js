@@ -84,6 +84,18 @@ app.get("/friends", autenticateToken, async (req, res) => {
     });
 });
 
+app.post("/add-friend", autenticateToken, async (req, res) => {
+  const userId = req.body.userId;
+  DbAccess.addFriendRequest(req.user.id, userId)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
 function autenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // if authHeader is undefined, token will be undefined too

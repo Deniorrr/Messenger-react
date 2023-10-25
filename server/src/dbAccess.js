@@ -85,13 +85,26 @@ class DbAccess {
   static async searchUsers(searchInput) {
     const phrases = searchInput.split(" ");
 
-    let sql = `SELECT * FROM users WHERE`; // UPPER(firstName) LIKE UPPER("%${phrases[0]}%") OR UPPER(lastName) LIKE UPPER("%${phrases[0]}%")`;
+    let sql = `SELECT * FROM users WHERE`;
     for (let i = 0; i < phrases.length; i++) {
       sql += ` UPPER(firstName) LIKE UPPER("%${phrases[i]}%") OR UPPER(lastName) LIKE UPPER("%${phrases[i]}%") OR UPPER(email) LIKE UPPER("%${phrases[i]}%")`;
       if (i !== phrases.length - 1) {
         sql += " OR";
       }
     }
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+  static async addFriendRequest(userId, friendId) {
+    const sql = `INSERT INTO friendships (user1, user2, status) VALUES (${userId}, ${friendId},"pending")`;
+    console.log(sql);
     return new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {
         if (err) {

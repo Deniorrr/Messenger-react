@@ -62,17 +62,26 @@ export function ApiProvider({ children }) {
       return res.data;
     },
     addFriend: async (userId) => {
-      const res = await axios.post(
-        "http://localhost:3001/add-friend",
-        {
-          userId: userId,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      const res = await axios
+        .post(
+          "http://localhost:3001/add-friend",
+          {
+            userId: userId,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject(err.response.data);
+        });
+      console.log("wtf");
       return res.data;
     },
   };

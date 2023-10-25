@@ -70,13 +70,13 @@ function App() {
 //DONE
 //nie można dwa razy tego samego maila użyć w bazie
 //wyszukiwanie userów
+//wyświetlanie errorów w loginie i registerze
+//wysyłanie zaproszeń userom
 
 //TODO
 
-//wysyłanie zaproszeń userom
 //odbieranie zaproszeń
 //akceptowanie zaproszeń //pokaż w liście znajomych
-//wyświetlanie errorów w loginie i registerze
 //sortuj znajomych po ostatniej wiadomości
 //odrzucanie zaproszeń //nic nie rób?
 //usuwanie userów

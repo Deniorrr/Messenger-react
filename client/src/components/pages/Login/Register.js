@@ -10,6 +10,8 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPasswd, setConfirmPasswd] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const registerApi = useContext(ApiContext).register;
 
   const register = () => {
@@ -18,13 +20,14 @@ function Register() {
         console.log(res);
       })
       .catch((err) => {
-        return alert(err);
+        setErrorMessage(err);
       });
   };
 
   return (
     <div className={styles["form-wrapper"]}>
       <div className={styles.form}>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         <h1>Register</h1>
         <div className={styles.names}>
           <input
