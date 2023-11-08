@@ -2,7 +2,6 @@ import { React, useEffect, useState } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
-import axios from "axios";
 
 function Messenger(props) {
   if (props.conversationId < 1) return <main>Select a conversation</main>;
@@ -37,6 +36,7 @@ function Messenger(props) {
         <div className={styles["friend-profile-bar"]}>
           <div className={styles.portrait}>
             {data.name[0] + data.surname[0]}
+            {props.conversationId}
           </div>
         </div>
         <main className={styles.messages}>{renderMessages()}</main>

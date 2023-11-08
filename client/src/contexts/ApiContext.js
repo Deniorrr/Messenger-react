@@ -3,10 +3,6 @@ import axios from "axios";
 
 export const ApiContext = React.createContext();
 
-// export function useApi() {
-//   return useContext(ApiContext);
-// }
-
 export function ApiProvider({ children }) {
   const x = {
     fetchConversations: async () => {
@@ -15,7 +11,7 @@ export function ApiProvider({ children }) {
           Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       });
-      return res.data;
+      return Promise.resolve(res.data);
     },
 
     register: async (firstName, lastName, email, password, confirmPasswd) => {
@@ -81,8 +77,67 @@ export function ApiProvider({ children }) {
           console.log(err);
           return Promise.reject(err.response.data);
         });
-      console.log("wtf");
       return res.data;
+    },
+    fetchFriendRequests: async () => {
+      const res = await axios
+        .get("http://localhost:3001/friend-requests", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+          },
+        })
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject("something went wrong");
+        });
+      return res;
+    },
+    acceptRequest: async (requestId) => {
+      const res = await axios
+        .post(
+          "http://localhost:3001/accept-request",
+          {
+            requestId: requestId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject("something went wrong");
+        });
+      return res;
+    },
+    rejectRequest: async (requestId) => {
+      const res = await axios
+        .post(
+          "http://localhost:3001/reject-request",
+          {
+            requestId: requestId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject("something went wrong");
+        });
+      return res;
     },
   };
 

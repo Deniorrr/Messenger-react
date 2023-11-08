@@ -8,12 +8,10 @@ import { ApiContext } from "../../../contexts/ApiContext";
 function ConversationList(props) {
   const [data, setData] = useState(null);
 
-  const fetchConversations = useContext(ApiContext).fetchConversations();
+  const fetchConversations = useContext(ApiContext).fetchConversations;
 
   useEffect(() => {
-    fetchConversations.then((x) => setData(x));
-    //console.log(fetchConversations);
-    // x();
+    fetchConversations().then((x) => setData(x, console.log(x)));
   }, []);
 
   const [activeConversationId, setActiveConversationId] = useState(0);

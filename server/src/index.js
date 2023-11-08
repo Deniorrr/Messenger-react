@@ -96,6 +96,41 @@ app.post("/add-friend", autenticateToken, async (req, res) => {
     });
 });
 
+app.get("/friend-requests", autenticateToken, async (req, res) => {
+  DbAccess.getFriendsRequests(req.user.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
+app.post("/accept-request", autenticateToken, async (req, res) => {
+  const requestId = req.body.requestId;
+  DbAccess.acceptRequest(requestId, req.user.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
+app.post("/reject-request", autenticateToken, async (req, res) => {
+  const requestId = req.body.requestId;
+  DbAccess.rejectRequest(requestId, req.user.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
 function autenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // if authHeader is undefined, token will be undefined too

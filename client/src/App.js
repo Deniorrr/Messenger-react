@@ -72,13 +72,13 @@ function App() {
 //wyszukiwanie userów
 //wyświetlanie errorów w loginie i registerze
 //wysyłanie zaproszeń userom
+//odbieranie zaproszeń
+//akceptowanie zaproszeń //pokaż w liście znajomych
+//odrzucanie zaproszeń //nic nie rób?
 
 //TODO
 
-//odbieranie zaproszeń
-//akceptowanie zaproszeń //pokaż w liście znajomych
 //sortuj znajomych po ostatniej wiadomości
-//odrzucanie zaproszeń //nic nie rób?
 //usuwanie userów
 //wygasanie tokenów
 //wysyłanie wiadomości
