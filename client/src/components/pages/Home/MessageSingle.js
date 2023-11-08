@@ -7,7 +7,7 @@ function MessageSingle(props) {
   return (
     <div
       className={`${styles["message"]}
-      ${isMyMessage ? styles["friend-message"] : styles["my-message"]} `}
+      ${isMyMessage ? styles["my-message"] : styles["friend-message"]} `}
     >
       <p>{messageText}</p>
     </div>

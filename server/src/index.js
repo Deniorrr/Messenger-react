@@ -56,7 +56,6 @@ app.get("/conversations", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -68,7 +67,6 @@ app.get("/search-users", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -79,7 +77,6 @@ app.get("/friends", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -91,7 +88,6 @@ app.post("/add-friend", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -102,7 +98,6 @@ app.get("/friend-requests", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -114,7 +109,6 @@ app.post("/accept-request", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
       res.status(500).send(err);
     });
 });
@@ -126,7 +120,29 @@ app.post("/reject-request", autenticateToken, async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("ERROR", err);
+      res.status(500).send(err);
+    });
+});
+
+app.post("/messages", autenticateToken, async (req, res) => {
+  const conversationId = req.body.conversationId;
+  DbAccess.getMessages(conversationId)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/send-message", autenticateToken, async (req, res) => {
+  const conversationId = req.body.conversationId;
+  const message = req.body.message;
+  DbAccess.sendMessage(conversationId, req.user.id, message)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
       res.status(500).send(err);
     });
 });

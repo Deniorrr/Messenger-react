@@ -95,34 +95,6 @@ class DbAccess {
         });
       });
     });
-    // return [
-    //   {
-    //     user: { id: 1, firstName: "Denis", lastName: "Poczęty" },
-    //     lastMessage: { message: "siema", when: "12:30" },
-    //     conversationId: 1,
-    //   },
-    //   {
-    //     user: { id: 2, firstName: "nie", lastName: "nie" },
-    //     lastMessage: { message: "nie", when: "12:30" },
-    //     conversationId: 2,
-    //   },
-    //   {
-    //     user: { id: 3, firstName: "wtf", lastName: "wtf" },
-    //     lastMessage: { message: "siema", when: "12:30" },
-    //     conversationId: 3,
-    //   },
-    // ];
-    // const sql = `SELECT * FROM friendships WHERE status = "accepted" AND (user1 = ${userId} OR user2 = ${userId})`;
-    // console.log(sql);
-    // return new Promise((resolve, reject) => {
-    //   this.db.query(sql, (err, result) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return reject(err);
-    //     }
-    //     resolve(result);
-    //   });
-    // });
   }
   static async searchUsers(searchInput) {
     const phrases = searchInput.split(" ");
@@ -186,6 +158,32 @@ class DbAccess {
 
   static async rejectRequest(requestId, userId) {
     const sql = `DELETE FROM friendships WHERE id = ${requestId} AND user2 = ${userId}`;
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+
+  static async getMessages(friendshipId) {
+    const sql = `SELECT * FROM messages WHERE friendshipId = ${friendshipId}`;
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+
+  static async sendMessage(friendshipId, senderId, message) {
+    const sql = `INSERT INTO messages (friendshipId, senderId, message, time) VALUES (${friendshipId}, ${senderId}, "${message}", NOW())`;
     return new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {
         if (err) {

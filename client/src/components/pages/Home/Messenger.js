@@ -1,13 +1,26 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useContext } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
+import { ApiContext } from "../../../contexts/ApiContext";
+import { jwtDecode } from "jwt-decode";
 
 function Messenger(props) {
+  const fetchMessages = useContext(ApiContext).fetchMessages;
+  const sendMessage = useContext(ApiContext).sendMessage;
+
+  const [messages, setMessages] = useState([]);
+
+  const decoded = jwtDecode(localStorage.getItem("accessToken"));
+
+  useEffect(() => {
+    fetchMessages(props.conversationId).then((res) => {
+      setMessages(res);
+    });
+  }, [props.conversationId]);
+
   if (props.conversationId < 1) return <main>Select a conversation</main>;
-  const sendMessage = (message) => {
-    console.log(message);
-  };
+
   const data = {
     name: "Denis",
     surname: "Poczęty",
@@ -22,10 +35,10 @@ function Messenger(props) {
   };
 
   const renderMessages = () => {
-    const elements = data.messages.map((x) => (
+    const elements = messages.map((x) => (
       <MessageSingle
         messageText={x.message}
-        isMyMessage={x.who === data.userId}
+        isMyMessage={x.senderId === decoded.id}
       />
     ));
     return elements;
@@ -40,7 +53,9 @@ function Messenger(props) {
           </div>
         </div>
         <main className={styles.messages}>{renderMessages()}</main>
-        <MessageInput sendMessage={(message) => sendMessage(message)} />
+        <MessageInput
+          sendMessage={(message) => sendMessage(props.conversationId, message)}
+        />
       </div>
     </main>
   );

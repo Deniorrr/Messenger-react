@@ -11,7 +11,7 @@ function ConversationList(props) {
   const fetchConversations = useContext(ApiContext).fetchConversations;
 
   useEffect(() => {
-    fetchConversations().then((x) => setData(x, console.log(x)));
+    fetchConversations().then((x) => setData(x));
   }, []);
 
   const [activeConversationId, setActiveConversationId] = useState(0);

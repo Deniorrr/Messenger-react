@@ -139,6 +139,51 @@ export function ApiProvider({ children }) {
         });
       return res;
     },
+    fetchMessages: async (conversationId) => {
+      const res = await axios
+        .post(
+          "http://localhost:3001/messages",
+          {
+            conversationId: conversationId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject("something went wrong");
+        });
+      return res;
+    },
+    sendMessage: async (conversationId, message) => {
+      const res = await axios
+        .post(
+          "http://localhost:3001/send-message",
+          {
+            conversationId: conversationId,
+            message: message,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((res) => {
+          return Promise.resolve(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          return Promise.reject("something went wrong");
+        });
+      return res;
+    },
   };
 
   return <ApiContext.Provider value={x}>{children}</ApiContext.Provider>;
