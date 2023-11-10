@@ -10,9 +10,9 @@ class DbAccess {
     database: "messenger",
   });
   static async registerUser(firstName, lastName, email, password) {
-    const sql = `SELECT * FROM users WHERE email = "${email}"`;
+    const sql = `SELECT * FROM users WHERE email = ?`;
     const result = await new Promise((resolve, reject) => {
-      this.db.query(sql, async (err, result) => {
+      this.db.query(sql, [email], async (err, result) => {
         if (err) {
           reject(err);
         }
@@ -28,9 +28,9 @@ class DbAccess {
             if (err) {
               reject(err);
             }
-            const sql3 = `SELECT id FROM users WHERE email = "${email}"`;
+            const sql3 = `SELECT id FROM users WHERE email = ?`;
             console.log(sql3);
-            this.db.query(sql3, (err, result) => {
+            this.db.query(sql3, [email], (err, result) => {
               if (err) {
                 reject(err);
               }
@@ -45,9 +45,9 @@ class DbAccess {
   }
   //przy login można skorzystać Promise.all, żeby jednocześnie sprawdzić czy email istnieje i czy hasło jest poprawne
   static async loginUser(email, password) {
-    const sql = `SELECT * FROM users WHERE email = "${email}"`;
+    const sql = `SELECT * FROM users WHERE email = ?`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [email], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -73,9 +73,9 @@ class DbAccess {
         }
         connection.beginTransaction((err2) => {
           if (err2) return reject(err2);
-          const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ${userId} AND user2 = users.id`;
-          const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ${userId} AND user1 = users.id`;
-          connection.query(sql, (err3, result) => {
+          const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
+          const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
+          connection.query(sql, [userId], (err3, result) => {
             if (err3) {
               connection.rollback(() => {
                 connection.release();
@@ -84,7 +84,7 @@ class DbAccess {
             }
             conversations = result;
           });
-          connection.query(sql2, (err3, result) => {
+          connection.query(sql2, [userId], (err3, result) => {
             if (err3) {
               connection.rollback(() => {
                 connection.release();
@@ -112,14 +112,16 @@ class DbAccess {
     const phrases = searchInput.split(" ");
 
     let sql = `SELECT * FROM users WHERE`;
+    let parameters = [];
     for (let i = 0; i < phrases.length; i++) {
-      sql += ` UPPER(firstName) LIKE UPPER("%${phrases[i]}%") OR UPPER(lastName) LIKE UPPER("%${phrases[i]}%") OR UPPER(email) LIKE UPPER("%${phrases[i]}%")`;
+      sql += ` UPPER(firstName) LIKE ? OR UPPER(lastName) LIKE ? OR UPPER(email) LIKE ?`;
+      parameters.push(`%${phrases[i]}%`, `%${phrases[i]}%`, `%${phrases[i]}%`);
       if (i !== phrases.length - 1) {
         sql += " OR";
       }
     }
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, parameters, (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -129,10 +131,10 @@ class DbAccess {
     });
   }
   static async addFriendRequest(userId, friendId) {
-    const sql = `INSERT INTO friendships (user1, user2, status) VALUES (${userId}, ${friendId},"pending")`;
+    const sql = `INSERT INTO friendships (user1, user2, status) VALUES (?, ?,"pending")`;
     console.log(sql);
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [userId, friendId], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -143,9 +145,9 @@ class DbAccess {
   }
 
   static async getFriendsRequests(userId) {
-    const sql = `SELECT friendships.id, users.firstName, users.lastName, users.email FROM friendships, users WHERE user2 = ${userId} AND status = "pending" AND user1 = users.id`;
+    const sql = `SELECT friendships.id, users.firstName, users.lastName, users.email FROM friendships, users WHERE user2 = ? AND status = "pending" AND user1 = users.id`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [userId], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -156,9 +158,9 @@ class DbAccess {
   }
 
   static async acceptRequest(requestId, userId) {
-    const sql = `UPDATE friendships SET status = "accepted" WHERE id = ${requestId} AND user2 = ${userId}`;
+    const sql = `UPDATE friendships SET status = "accepted" WHERE id = ? AND user2 = ?`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [requestId, userId], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -169,9 +171,9 @@ class DbAccess {
   }
 
   static async rejectRequest(requestId, userId) {
-    const sql = `DELETE FROM friendships WHERE id = ${requestId} AND user2 = ${userId}`;
+    const sql = `DELETE FROM friendships WHERE id = ? AND user2 = ?`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [requestId, userId], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -182,9 +184,9 @@ class DbAccess {
   }
 
   static async getMessages(friendshipId) {
-    const sql = `SELECT * FROM messages WHERE friendshipId = ${friendshipId}`;
+    const sql = `SELECT * FROM messages WHERE friendshipId = ?`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [friendshipId], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);
@@ -195,9 +197,9 @@ class DbAccess {
   }
 
   static async sendMessage(friendshipId, senderId, message) {
-    const sql = `INSERT INTO messages (friendshipId, senderId, message, time) VALUES (${friendshipId}, ${senderId}, "${message}", NOW())`;
+    const sql = `INSERT INTO messages (friendshipId, senderId, message, time) VALUES (?, ?, ?, NOW())`;
     return new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, [friendshipId, senderId, message], (err, result) => {
         if (err) {
           console.log(err);
           return reject(err);

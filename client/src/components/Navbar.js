@@ -1,8 +1,16 @@
-import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styles from "./style/navbar.module.scss";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
     <>
       <nav className={styles.navbar}>

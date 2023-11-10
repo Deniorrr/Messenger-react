@@ -10,6 +10,7 @@ import Friends from "./components/pages/Friends/Friends";
 import FriendsAdd from "./components/pages/Friends/FriendsAdd";
 import FriendsList from "./components/pages/Friends/FriendsList";
 import FriendsRequests from "./components/pages/Friends/FriendsRequests";
+import Account from "./components//pages/Account/Account";
 
 import { ApiProvider } from "./contexts/ApiContext";
 
@@ -56,7 +57,14 @@ function App() {
                 <Route path="requests" element={<FriendsRequests />} />
               </Route>
               <Route path="settings" element={<main>settings</main>} />
-              <Route path="account" element={<main>account</main>} />
+              <Route
+                path="account"
+                element={
+                  <main>
+                    <Account />
+                  </main>
+                }
+              />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -75,14 +83,14 @@ function App() {
 //odbieranie zaproszeń
 //akceptowanie zaproszeń //pokaż w liście znajomych
 //odrzucanie zaproszeń //nic nie rób?
+//wysyłanie wiadomości
+//odbieranie wiadomości
 
 //TODO
 
 //sortuj znajomych po ostatniej wiadomości
 //usuwanie userów
 //wygasanie tokenów
-//wysyłanie wiadomości
-//odbieranie wiadomości
 //wyszukiwanie znajomych aside
 //blokowanie userów
 //widok usera, żeby można było wysłać link do profilu

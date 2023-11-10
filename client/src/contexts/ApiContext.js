@@ -1,19 +1,14 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const ApiContext = React.createContext();
 
 export function ApiProvider({ children }) {
-  const x = {
-    fetchConversations: async () => {
-      const res = await axios.get("http://localhost:3001/conversations", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      });
-      return Promise.resolve(res.data);
-    },
+  const APIADDRESS = "http://localhost:3001";
+  const navigate = useNavigate();
 
+  const x = {
     register: async (firstName, lastName, email, password, confirmPasswd) => {
       if (!firstName || !lastName || !email || !password || !confirmPasswd) {
         return Promise.reject("Please fill in all fields");
@@ -23,7 +18,7 @@ export function ApiProvider({ children }) {
         return Promise.reject("Passwords do not match");
       }
       try {
-        const res = await axios.post("http://localhost:3001/register", {
+        const res = await axios.post(APIADDRESS + "/register", {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -38,15 +33,29 @@ export function ApiProvider({ children }) {
       if (!email || !password) {
         return Promise.reject("Please fill in all fields");
       }
-      const res = await axios.post("http://localhost:3001/login", {
+      const res = await axios.post(APIADDRESS + "/login", {
         email: email,
         password: password,
       });
       return res.data;
     },
+    logout: async () => {
+      //Not an actual api call, but it's a good place to put it
+      localStorage.removeItem("accessToken");
+      return Promise.resolve();
+    },
+
+    fetchConversations: async () => {
+      const res = await axios.get(APIADDRESS + "/conversations", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      });
+      return Promise.resolve(res.data);
+    },
     searchUsers: async (searchInput) => {
       const res = await axios.get(
-        "http://localhost:3001/search-users?searchInput=" + searchInput,
+        APIADDRESS + "/search-users?searchInput=" + searchInput,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -58,7 +67,7 @@ export function ApiProvider({ children }) {
     addFriend: async (userId) => {
       const res = await axios
         .post(
-          "http://localhost:3001/add-friend",
+          APIADDRESS + "/add-friend",
           {
             userId: userId,
           },
@@ -79,7 +88,7 @@ export function ApiProvider({ children }) {
     },
     fetchFriendRequests: async () => {
       const res = await axios
-        .get("http://localhost:3001/friend-requests", {
+        .get(APIADDRESS + "/friend-requests", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
           },
@@ -96,7 +105,7 @@ export function ApiProvider({ children }) {
     acceptRequest: async (requestId) => {
       const res = await axios
         .post(
-          "http://localhost:3001/accept-request",
+          APIADDRESS + "/accept-request",
           {
             requestId: requestId,
           },
@@ -118,7 +127,7 @@ export function ApiProvider({ children }) {
     rejectRequest: async (requestId) => {
       const res = await axios
         .post(
-          "http://localhost:3001/reject-request",
+          APIADDRESS + "/reject-request",
           {
             requestId: requestId,
           },
@@ -140,7 +149,7 @@ export function ApiProvider({ children }) {
     fetchMessages: async (conversationId) => {
       const res = await axios
         .post(
-          "http://localhost:3001/messages",
+          APIADDRESS + "/messages",
           {
             conversationId: conversationId,
           },
@@ -162,7 +171,7 @@ export function ApiProvider({ children }) {
     sendMessage: async (conversationId, message) => {
       const res = await axios
         .post(
-          "http://localhost:3001/send-message",
+          APIADDRESS + "/send-message",
           {
             conversationId: conversationId,
             message: message,
