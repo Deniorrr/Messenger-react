@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
+const e = require("express");
 
 class DbAccess {
   static db = mysql.createPool({
@@ -11,25 +12,36 @@ class DbAccess {
   static async registerUser(firstName, lastName, email, password) {
     const sql = `SELECT * FROM users WHERE email = "${email}"`;
     const result = await new Promise((resolve, reject) => {
-      this.db.query(sql, (err, result) => {
+      this.db.query(sql, async (err, result) => {
         if (err) {
           reject(err);
         }
         if (result.length > 0) {
-          return reject("EmailIsUsed");
+          reject("EmailIsUsed");
         }
-        const hashedPassword = bcrypt.hash(password, 10);
-        const sql2 = `INSERT INTO users (firstName, lastName, email, password) VALUES ("${firstName}", "${lastName}", "${email}", "${hashedPassword}")`;
-        return new Promise((resolve, reject) => {
-          this.db.query(sql2, (err, result) => {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const sql2 = `INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`; //przerobić tak wszystkie zapytania
+        this.db.query(
+          sql2,
+          [firstName, lastName, email, hashedPassword],
+          (err, result) => {
             if (err) {
               reject(err);
             }
-            resolve(result);
-          });
-        });
+            const sql3 = `SELECT id FROM users WHERE email = "${email}"`;
+            console.log(sql3);
+            this.db.query(sql3, (err, result) => {
+              if (err) {
+                reject(err);
+              }
+              console.log(result[0].id);
+              resolve(result[0].id);
+            });
+          }
+        );
       });
     });
+    return result;
   }
   //przy login można skorzystać Promise.all, żeby jednocześnie sprawdzić czy email istnieje i czy hasło jest poprawne
   static async loginUser(email, password) {

@@ -19,7 +19,10 @@ app.post("/register", async (req, res) => {
   DbAccess.registerUser(firstName, lastName, email, password)
     .then((result) => {
       console.log("RESULT", result);
-      res.send("ok");
+      const user = { email: email, id: result };
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      console.log(accessToken);
+      res.send(accessToken);
     })
     .catch((err) => {
       if (err === "EmailIsUsed") {

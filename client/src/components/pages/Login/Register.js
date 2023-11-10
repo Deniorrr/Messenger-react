@@ -1,9 +1,11 @@
 import { React, useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
 import { ApiContext } from "../../../contexts/ApiContext";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,7 +19,8 @@ function Register() {
   const register = () => {
     registerApi(firstName, lastName, email, password, confirmPasswd)
       .then((res) => {
-        console.log(res);
+        localStorage.setItem("accessToken", res);
+        navigate("/");
       })
       .catch((err) => {
         setErrorMessage(err);

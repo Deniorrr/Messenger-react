@@ -22,19 +22,17 @@ export function ApiProvider({ children }) {
       if (password !== confirmPasswd) {
         return Promise.reject("Passwords do not match");
       }
-      await axios
-        .post("http://localhost:3001/register", {
+      try {
+        const res = await axios.post("http://localhost:3001/register", {
           firstName: firstName,
           lastName: lastName,
           email: email,
           password: password,
-        })
-        .catch((err) => {
-          return Promise.reject(err.response.data);
-        })
-        .then((res) => {
-          return Promise.resolve(res.data);
         });
+        return res.data;
+      } catch (err) {
+        throw err.response.data;
+      }
     },
     login: async (email, password) => {
       if (!email || !password) {

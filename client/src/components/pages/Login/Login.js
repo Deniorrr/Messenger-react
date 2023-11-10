@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
 //import axios from "axios";
 import { ApiContext } from "../../../contexts/ApiContext";
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -13,6 +14,7 @@ function Login() {
     loginApi(email, password)
       .then((res) => {
         localStorage.setItem("accessToken", res);
+        navigate("/");
       })
       .catch((err) => {
         alert(err);
