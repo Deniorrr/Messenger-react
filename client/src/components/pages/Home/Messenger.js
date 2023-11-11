@@ -8,12 +8,18 @@ import { jwtDecode } from "jwt-decode";
 function Messenger(props) {
   const fetchMessages = useContext(ApiContext).fetchMessages;
   const sendMessage = useContext(ApiContext).sendMessage;
+  const getToken = useContext(ApiContext).getToken;
 
   const [messages, setMessages] = useState([]);
 
-  const decoded = jwtDecode(localStorage.getItem("accessToken"));
+  const [decodedToken, setDecodedToken] = useState({});
 
   useEffect(() => {
+    try {
+      setDecodedToken(jwtDecode(getToken()));
+    } catch (err) {
+      return;
+    }
     fetchMessages(props.conversationId).then((res) => {
       setMessages(res);
     });
@@ -38,7 +44,7 @@ function Messenger(props) {
     const elements = messages.map((x) => (
       <MessageSingle
         messageText={x.message}
-        isMyMessage={x.senderId === decoded.id}
+        isMyMessage={x.senderId === decodedToken.id}
       />
     ));
     return elements;

@@ -6,7 +6,7 @@ import styles from "../../style/aside.module.scss";
 import { ApiContext } from "../../../contexts/ApiContext";
 
 function ConversationList(props) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   const fetchConversations = useContext(ApiContext).fetchConversations;
 

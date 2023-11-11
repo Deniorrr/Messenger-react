@@ -8,7 +8,22 @@ export function ApiProvider({ children }) {
   const APIADDRESS = "http://localhost:3001";
   const navigate = useNavigate();
 
+  const checkError = (err) => {
+    const status = err.response.status ? err.response.status : err;
+    if (status === 401 || status === 403) {
+      return navigate("/login");
+    }
+  };
+
+  const getToken = function () {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+      return null;
+    }
+    return localStorage.getItem("accessToken");
+  };
   const x = {
+    getToken: getToken,
     register: async (firstName, lastName, email, password, confirmPasswd) => {
       if (!firstName || !lastName || !email || !password || !confirmPasswd) {
         return Promise.reject("Please fill in all fields");
@@ -29,7 +44,7 @@ export function ApiProvider({ children }) {
         throw err.response.data;
       }
     },
-    login: async (email, password) => {
+    login: async function (email, password) {
       if (!email || !password) {
         return Promise.reject("Please fill in all fields");
       }
@@ -39,29 +54,37 @@ export function ApiProvider({ children }) {
       });
       return res.data;
     },
-    logout: async () => {
+    logout: async function () {
       //Not an actual api call, but it's a good place to put it
       localStorage.removeItem("accessToken");
-      return Promise.resolve();
+      return;
     },
-
-    fetchConversations: async () => {
-      const res = await axios.get(APIADDRESS + "/conversations", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      });
-      return Promise.resolve(res.data);
-    },
-    searchUsers: async (searchInput) => {
-      const res = await axios.get(
-        APIADDRESS + "/search-users?searchInput=" + searchInput,
-        {
+    fetchConversations: async function () {
+      return axios
+        .get(APIADDRESS + "/conversations", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            Authorization: "Bearer " + getToken(),
           },
-        }
-      );
+        })
+        .then((res) => {
+          console.log(res);
+          return res.data;
+        })
+        .catch((err) => {
+          console.log("XD");
+          checkError(err);
+        });
+    },
+    searchUsers: async function (searchInput) {
+      const res = await axios
+        .get(APIADDRESS + "/search-users?searchInput=" + searchInput, {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+          },
+        })
+        .catch((err) => {
+          checkError(err);
+        });
       return res.data;
     },
     addFriend: async (userId) => {
@@ -73,7 +96,7 @@ export function ApiProvider({ children }) {
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + getToken(),
             },
           }
         )
@@ -81,28 +104,26 @@ export function ApiProvider({ children }) {
           return Promise.resolve(res.data);
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject(err.response.data);
+          checkError(err);
         });
       return res.data;
     },
-    fetchFriendRequests: async () => {
+    fetchFriendRequests: async function () {
       const res = await axios
         .get(APIADDRESS + "/friend-requests", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            Authorization: "Bearer " + getToken(),
           },
         })
         .then((res) => {
           return Promise.resolve(res.data);
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject("something went wrong");
+          checkError(err);
         });
       return res;
     },
-    acceptRequest: async (requestId) => {
+    acceptRequest: async function (requestId) {
       const res = await axios
         .post(
           APIADDRESS + "/accept-request",
@@ -111,20 +132,19 @@ export function ApiProvider({ children }) {
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + getToken(),
             },
           }
         )
         .then((res) => {
-          return Promise.resolve(res.data);
+          return res.data;
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject("something went wrong");
+          checkError(err);
         });
       return res;
     },
-    rejectRequest: async (requestId) => {
+    rejectRequest: async function (requestId) {
       const res = await axios
         .post(
           APIADDRESS + "/reject-request",
@@ -133,20 +153,19 @@ export function ApiProvider({ children }) {
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + getToken(),
             },
           }
         )
         .then((res) => {
-          return Promise.resolve(res.data);
+          return res.data;
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject("something went wrong");
+          checkError(err);
         });
       return res;
     },
-    fetchMessages: async (conversationId) => {
+    fetchMessages: async function (conversationId) {
       const res = await axios
         .post(
           APIADDRESS + "/messages",
@@ -155,20 +174,19 @@ export function ApiProvider({ children }) {
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + getToken(),
             },
           }
         )
         .then((res) => {
-          return Promise.resolve(res.data);
+          return res.data;
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject("something went wrong");
+          checkError(err);
         });
       return res;
     },
-    sendMessage: async (conversationId, message) => {
+    sendMessage: async function (conversationId, message) {
       const res = await axios
         .post(
           APIADDRESS + "/send-message",
@@ -178,16 +196,15 @@ export function ApiProvider({ children }) {
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + getToken(),
             },
           }
         )
         .then((res) => {
-          return Promise.resolve(res.data);
+          return res.data;
         })
         .catch((err) => {
-          console.log(err);
-          return Promise.reject("something went wrong");
+          checkError(err);
         });
       return res;
     },
