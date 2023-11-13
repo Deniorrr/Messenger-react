@@ -85,16 +85,17 @@ function App() {
 //odrzucanie zaproszeń //nic nie rób?
 //wysyłanie wiadomości
 //odbieranie wiadomości
+//wyszukiwanie znajomych aside
 
 //TODO
 
 //sortuj znajomych po ostatniej wiadomości
 //usuwanie userów
 //wygasanie tokenów
-//wyszukiwanie znajomych aside
 //blokowanie userów
 //widok usera, żeby można było wysłać link do profilu
 
+//odbieranie wiadomości //websocket
 //zmiana statusu usera //online, offline, away
 //zmiana opisu usera
 //ustawienie pseudonimu
@@ -106,7 +107,5 @@ function App() {
 //zmiana nazwy grup
 
 // IDEAS
-
-// a todo list for every friendship
 
 export default App;

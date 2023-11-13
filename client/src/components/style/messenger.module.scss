@@ -11,11 +11,13 @@
   .messages {
     .message {
       p {
+        max-width: 60%;
         margin: 0.5rem;
         padding: 0.5rem;
         border-radius: 1rem;
         background-color: #444;
         background-color: $color-primary-dark;
+        word-wrap: break-word;
       }
     }
     .friend-message {

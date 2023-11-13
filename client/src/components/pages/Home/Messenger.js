@@ -7,12 +7,26 @@ import { jwtDecode } from "jwt-decode";
 
 function Messenger(props) {
   const fetchMessages = useContext(ApiContext).fetchMessages;
-  const sendMessage = useContext(ApiContext).sendMessage;
+
+  const sendMessageApi = useContext(ApiContext).sendMessage;
   const getToken = useContext(ApiContext).getToken;
 
   const [messages, setMessages] = useState([]);
-
   const [decodedToken, setDecodedToken] = useState({});
+
+  const sendMessage = (message) => {
+    if (message === "") return;
+    sendMessageApi(props.conversationId, message)
+      .then(() => {
+        setMessages([
+          ...messages,
+          { senderId: decodedToken.id, message: message },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     try {
@@ -20,24 +34,21 @@ function Messenger(props) {
     } catch (err) {
       return;
     }
-    fetchMessages(props.conversationId).then((res) => {
-      setMessages(res);
-    });
-  }, [props.conversationId]);
+    fetchMessages(props.conversationId)
+      .then((res) => {
+        setMessages(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [props.conversationId, fetchMessages, getToken]);
 
   if (props.conversationId < 1) return <main>Select a conversation</main>;
 
-  const data = {
+  const friendData = {
     name: "Denis",
     surname: "Poczęty",
     userId: 1,
-    messages: [
-      { who: 1, when: "12:30", message: "siema" },
-      { who: 1, when: "12:30", message: "siema" },
-      { who: 1, when: "12:30", message: "siema" },
-      { who: 2, when: "12:30", message: "siema" },
-      { who: 1, when: "12:30", message: "siema" },
-    ],
   };
 
   const renderMessages = () => {
@@ -54,14 +65,11 @@ function Messenger(props) {
       <div className={styles.messenger}>
         <div className={styles["friend-profile-bar"]}>
           <div className={styles.portrait}>
-            {data.name[0] + data.surname[0]}
-            {props.conversationId}
+            {friendData.name[0] + friendData.surname[0]}
           </div>
         </div>
         <main className={styles.messages}>{renderMessages()}</main>
-        <MessageInput
-          sendMessage={(message) => sendMessage(props.conversationId, message)}
-        />
+        <MessageInput sendMessage={(message) => sendMessage(message)} />
       </div>
     </main>
   );

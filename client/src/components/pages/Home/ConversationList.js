@@ -7,6 +7,8 @@ import { ApiContext } from "../../../contexts/ApiContext";
 
 function ConversationList(props) {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [search, setSearch] = useState("");
 
   const fetchConversations = useContext(ApiContext).fetchConversations;
 
@@ -14,34 +16,15 @@ function ConversationList(props) {
     fetchConversations().then((x) => setData(x));
   }, []);
 
-  const [activeConversationId, setActiveConversationId] = useState(0);
+  useEffect(() => {
+    let filtered = data.filter((x) => {
+      let fullName = x.firstName + " " + x.lastName;
+      return fullName.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredData(filtered);
+  }, [data, search]);
 
-  // const data = [
-  //   {
-  //     name: "Denis",
-  //     surname: "Poczęty",
-  //     color: "#ff00ff",
-  //     lastMessage: "siema co tam",
-  //     timestamp: "12:30",
-  //     id: 1,
-  //   },
-  //   {
-  //     name: "Denis",
-  //     surname: "Poczęty",
-  //     color: "#ff00ff",
-  //     lastMessage: "siema co tam",
-  //     timestamp: "12:30",
-  //     id: 2,
-  //   },
-  //   {
-  //     name: "Denis",
-  //     surname: "Poczęty",
-  //     color: "#ff00ff",
-  //     lastMessage: "siema co tam",
-  //     timestamp: "12:30",
-  //     id: 3,
-  //   },
-  // ];
+  const [activeConversationId, setActiveConversationId] = useState(0);
 
   const changeActiveConversation = (conversationId) => {
     setActiveConversationId(conversationId);
@@ -50,7 +33,7 @@ function ConversationList(props) {
 
   const renderConversationList = () => {
     if (data === null) return <div>Loading...</div>;
-    let elements = data.map((details) => (
+    let elements = filteredData.map((details) => (
       <ConversationListSingle
         displayConversation={(conversationId) =>
           changeActiveConversation(conversationId)
@@ -69,7 +52,7 @@ function ConversationList(props) {
         onClick={() => props.changeAsideVisibility()}
       >
         <img src={searchIcon} alt="searchIcon"></img>
-        <input type="text"></input>
+        <input type="text" onChange={(e) => setSearch(e.target.value)}></input>
       </div>
       <ul>{renderConversationList()}</ul>
     </div>

@@ -67,11 +67,9 @@ export function ApiProvider({ children }) {
           },
         })
         .then((res) => {
-          console.log(res);
           return res.data;
         })
         .catch((err) => {
-          console.log("XD");
           checkError(err);
         });
     },
