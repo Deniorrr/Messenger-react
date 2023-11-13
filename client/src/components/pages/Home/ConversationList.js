@@ -14,7 +14,7 @@ function ConversationList(props) {
 
   useEffect(() => {
     fetchConversations().then((x) => setData(x));
-  }, []);
+  }, [fetchConversations]);
 
   useEffect(() => {
     let filtered = data.filter((x) => {
