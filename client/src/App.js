@@ -89,6 +89,7 @@ function App() {
 
 //TODO
 
+//dodać napisy przy login i register
 //sortuj znajomych po ostatniej wiadomości
 //usuwanie userów
 //wygasanie tokenów

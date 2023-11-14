@@ -73,6 +73,18 @@ export function ApiProvider({ children }) {
           checkError(err);
         });
     },
+    fetchFriends: async function () {
+      const res = await axios
+        .get(APIADDRESS + "/friends", {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+          },
+        })
+        .catch((err) => {
+          checkError(err);
+        });
+      return res.data;
+    },
     searchUsers: async function (searchInput) {
       const res = await axios
         .get(APIADDRESS + "/search-users?searchInput=" + searchInput, {

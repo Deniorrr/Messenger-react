@@ -4,8 +4,46 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "./env/local.env" });
 
+//sockets
+const server = require("http").createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  const token = socket.handshake.query.token;
+  //authenticate token
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return;
+    //get all friendships
+    DbAccess.getFriendsIds(user.id).then((result) => {
+      socket.join(result);
+    });
+    socket.on("send-message", (conversationId, message) => {
+      DbAccess.sendMessage(conversationId, user.id, message)
+        .then(() => {
+          io.to(conversationId).emit("receive-message", message, user.id);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  });
+  // console.log("a user connected with token" + token);
+  // socket.on("join-room", (roomId) => {
+  //   socket.join(roomId);
+  // });
+  // socket.on("send-message", (roomId, message) => {
+  //   socket.to(roomId).emit("receive-message", message);
+  // });
+});
+
 const startServer = () => {
-  app.listen(3001);
+  server.listen(3001);
   console.log("app Started on localhost:3001");
 };
 

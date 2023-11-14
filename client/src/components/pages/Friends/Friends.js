@@ -1,11 +1,11 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import "../../style/friends.scss";
+import styles from "../../style/friends.module.scss";
 
 function Friends() {
   return (
     <>
-      <nav>
+      <nav id={styles["friendsNavbar"]}>
         <ul>
           <li>
             <NavLink to="/friends">List</NavLink>

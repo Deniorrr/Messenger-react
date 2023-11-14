@@ -1,0 +1,23 @@
+@import "./variables";
+
+#friendsNavbar {
+  ul {
+    display: flex;
+    justify-content: center;
+    li {
+      list-style-type: none;
+      margin: 0 0.3rem;
+      a {
+        padding: 0.5rem 1rem;
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        border: 2px solid $color-primary;
+        border-radius: 0.5rem;
+      }
+      a:hover {
+        background-color: $color-primary-dark;
+      }
+    }
+  }
+}

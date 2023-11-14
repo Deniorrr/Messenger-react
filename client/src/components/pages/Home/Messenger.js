@@ -1,31 +1,54 @@
-import { React, useEffect, useState, useContext } from "react";
+import { React, useEffect, useState, useContext, useRef } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { ApiContext } from "../../../contexts/ApiContext";
 import { jwtDecode } from "jwt-decode";
+import io from "socket.io-client";
 
 function Messenger(props) {
+  const socket = useRef(
+    io("http://localhost:3001", {
+      query: {
+        token: useContext(ApiContext).getToken(),
+      },
+    })
+  );
   const fetchMessages = useContext(ApiContext).fetchMessages;
-
   const sendMessageApi = useContext(ApiContext).sendMessage;
   const getToken = useContext(ApiContext).getToken;
+
+  useEffect(() => {
+    const socketHelper = socket.current;
+
+    socketHelper.on("receive-message", (message, senderId) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { senderId: senderId, message: message },
+      ]);
+    });
+
+    return () => {
+      socketHelper.off("receive-message");
+    };
+  });
 
   const [messages, setMessages] = useState([]);
   const [decodedToken, setDecodedToken] = useState({});
 
   const sendMessage = (message) => {
     if (message === "") return;
-    sendMessageApi(props.conversationId, message)
-      .then(() => {
-        setMessages([
-          ...messages,
-          { senderId: decodedToken.id, message: message },
-        ]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    socket.current.emit("send-message", props.conversationId, message);
+    // sendMessageApi(props.conversationId, message)
+    //   .then(() => {
+    //     setMessages([
+    //       ...messages,
+    //       { senderId: decodedToken.id, message: message },
+    //     ]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   useEffect(() => {

@@ -208,5 +208,64 @@ class DbAccess {
       });
     });
   }
+
+  static async getFriendsIds(userId) {
+    const sql = "SELECT id FROM friendships WHERE user1 = ? OR user2 = ?";
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, [userId, userId], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        const friendshipsIds = result.map((x) => x.id);
+        return friendshipsIds;
+      });
+    });
+  }
+
+  static async getFriends(userId) {
+    return new Promise((resolve, reject) => {
+      let conversations = [];
+      this.db.getConnection((err, connection) => {
+        if (err) {
+          return reject(err);
+        }
+        connection.beginTransaction((err2) => {
+          if (err2) return reject(err2);
+          const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
+          const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
+          connection.query(sql, [userId], (err3, result) => {
+            if (err3) {
+              connection.rollback(() => {
+                connection.release();
+                return reject(err3);
+              });
+            }
+            conversations = result;
+          });
+          connection.query(sql2, [userId], (err3, result) => {
+            if (err3) {
+              connection.rollback(() => {
+                connection.release();
+                return reject(err3);
+              });
+            }
+            conversations = conversations.concat(result);
+          });
+          connection.commit((err3) => {
+            if (err3) {
+              console.log(err3);
+              connection.rollback(() => {
+                connection.release();
+                throw err3;
+              });
+            }
+            return resolve(conversations);
+          });
+          connection.release();
+        });
+      });
+    });
+  }
 }
 module.exports = DbAccess;

@@ -35,11 +35,9 @@ function ConversationList(props) {
     if (data === null) return <div>Loading...</div>;
     let elements = filteredData.map((details) => (
       <ConversationListSingle
-        displayConversation={(conversationId) =>
-          changeActiveConversation(conversationId)
-        }
+        displayConversation={(id) => changeActiveConversation(id)}
         details={details}
-        isActive={details.conversationId === activeConversationId}
+        isActive={details.id === activeConversationId}
       />
     ));
     return elements;

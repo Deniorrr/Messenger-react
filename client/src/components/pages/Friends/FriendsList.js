@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ApiContext } from "../../../contexts/ApiContext";
 
 function FriendsList() {
   const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const fetchFriends = useContext(ApiContext).fetchFriends;
+
+  useState(() => {
+    fetchFriends().then((res) => {
+      console.log(res);
+      setFriends(res);
+    });
+  }, []);
 
   return (
     <div>
@@ -21,7 +30,7 @@ function FriendsList() {
               <div className="friend__avatar">
                 <img src={friend.avatar} alt={friend.name} />
               </div>
-              <div className="friend__name">{friend.name}</div>
+              <div className="friend__name">{friend.firstName}</div>
             </div>
           );
         })}
