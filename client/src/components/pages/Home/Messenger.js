@@ -14,6 +14,10 @@ function Messenger(props) {
       },
     })
   );
+
+  const [messages, setMessages] = useState([]);
+  const [decodedToken, setDecodedToken] = useState({});
+
   const fetchMessages = useContext(ApiContext).fetchMessages;
   const sendMessageApi = useContext(ApiContext).sendMessage;
   const getToken = useContext(ApiContext).getToken;
@@ -32,9 +36,6 @@ function Messenger(props) {
       socketHelper.off("receive-message");
     };
   });
-
-  const [messages, setMessages] = useState([]);
-  const [decodedToken, setDecodedToken] = useState({});
 
   const sendMessage = (message) => {
     if (message === "") return;

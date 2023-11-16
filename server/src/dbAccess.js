@@ -218,7 +218,7 @@ class DbAccess {
           return reject(err);
         }
         const friendshipsIds = result.map((x) => x.id);
-        return friendshipsIds;
+        return resolve(friendshipsIds);
       });
     });
   }
@@ -232,6 +232,23 @@ class DbAccess {
         }
         connection.beginTransaction((err2) => {
           if (err2) return reject(err2);
+          // SELECT *, friend.firstName AS "IMIE"
+          // FROM friendships
+          // JOIN users ON friendships.user1 = users.id
+          // JOIN messages ON messages.friendshipId = friendships.id
+          // JOIN users AS friend ON friendships.user2 = friend.id
+          // WHERE users.id = 30
+          // ORDER BY messages.time DESC
+          // LIMIT 1;
+
+          // SELECT *, friend.firstName AS "IMIE"
+          // FROM friendships
+          // JOIN users ON friendships.user2 = users.id
+          // JOIN messages ON messages.friendshipId = friendships.jid
+          // JOIN users AS friend ON friendships.user1 = friend.id
+          // WHERE users.id = 30
+          // ORDER BY messages.time DESC
+          // LIMIT 1;
           const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
           const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
           connection.query(sql, [userId], (err3, result) => {
