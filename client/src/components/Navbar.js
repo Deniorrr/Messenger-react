@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styles from "./style/navbar.module.scss";
+import { SocketContext } from "../contexts/SocketContext";
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const establishConnection = useContext(SocketContext).establishConnection;
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
+    establishConnection();
   }, [navigate]);
 
   return (

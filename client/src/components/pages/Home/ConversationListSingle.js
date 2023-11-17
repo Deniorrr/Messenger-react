@@ -18,9 +18,11 @@ function ConversationListSingle(props) {
           <p className={styles.name}>
             {details.firstName} {details.lastName}
           </p>
-          <p className={styles.time}>when</p>
+          <p className={styles.time}>{details.time}</p>
         </header>
-        <p className={styles.message}>message</p>
+        <p className={styles.message}>
+          {details.senderName + ": " + details.message}
+        </p>
       </div>
     </li>
   );

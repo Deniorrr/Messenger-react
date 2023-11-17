@@ -4,17 +4,16 @@ import ConversationListSingle from "./ConversationListSingle";
 import searchIcon from "../../../assets/search.svg";
 import styles from "../../style/aside.module.scss";
 import { ApiContext } from "../../../contexts/ApiContext";
+import { SocketContext } from "../../../contexts/SocketContext";
 
 function ConversationList(props) {
-  const [data, setData] = useState([]);
+  //const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
 
-  const fetchConversations = useContext(ApiContext).fetchConversations;
-
-  useEffect(() => {
-    fetchConversations().then((x) => setData(x));
-  }, [fetchConversations]);
+  const fetchConversations = useContext(SocketContext).fetchConversations;
+  //const fetchConversations = useContext(ApiContext).fetchConversations;
+  const data = useContext(SocketContext).conversations;
 
   useEffect(() => {
     let filtered = data.filter((x) => {
@@ -23,6 +22,10 @@ function ConversationList(props) {
     });
     setFilteredData(filtered);
   }, [data, search]);
+
+  useEffect(() => {
+    fetchConversations();
+  }, []);
 
   const [activeConversationId, setActiveConversationId] = useState(0);
 

@@ -67,7 +67,7 @@ function Messenger(props) {
       });
   }, [props.conversationId, fetchMessages, getToken]);
 
-  if (props.conversationId < 1) return <main>Select a conversation</main>;
+  if (props.conversationId < 0) return <main>Select a conversation</main>;
 
   const friendData = {
     name: "Denis",

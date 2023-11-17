@@ -66,47 +66,53 @@ class DbAccess {
 
   static getConversations(userId) {
     return new Promise((resolve, reject) => {
-      let conversations = [];
-      this.db.getConnection((err, connection) => {
+      const sql = `
+      SELECT friend.firstName,
+      friend.lastName,
+      friendships.id AS "id",
+      messages.senderId,
+      TIME_FORMAT(messages.time, "%H:%i") AS "time",
+      messages.message,
+      sender.firstName AS "senderName"
+      FROM friendships
+      JOIN users ON friendships.user1 = users.id
+      JOIN messages ON messages.friendshipId = friendships.id
+      JOIN users AS friend ON friendships.user2 = friend.id
+      JOIN users AS sender ON sender.id = messages.senderId
+      WHERE users.id = ?
+      ORDER BY messages.time DESC
+      LIMIT 1;`;
+      const sql2 = `
+      SELECT friend.firstName,
+      friend.lastName,
+      friendships.id AS "id",
+      messages.senderId,
+      TIME_FORMAT(messages.time, "%H:%i") AS "time",
+      messages.message,
+      sender.firstName AS "senderName"
+      FROM friendships
+      JOIN users ON friendships.user2 = users.id
+      JOIN messages ON messages.friendshipId = friendships.id
+      JOIN users AS friend ON friendships.user1 = friend.id
+      JOIN users AS sender ON sender.id = messages.senderId
+      WHERE users.id = ?
+      ORDER BY messages.time DESC
+      LIMIT 1;`;
+      this.db.query(sql, [userId], (err, result1) => {
         if (err) {
           return reject(err);
         }
-        connection.beginTransaction((err2) => {
-          if (err2) return reject(err2);
-          const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
-          const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
-          connection.query(sql, [userId], (err3, result) => {
-            if (err3) {
-              connection.rollback(() => {
-                connection.release();
-                return reject(err3);
-              });
-            }
-            conversations = result;
-          });
-          connection.query(sql2, [userId], (err3, result) => {
-            if (err3) {
-              connection.rollback(() => {
-                connection.release();
-                return reject(err3);
-              });
-            }
-            conversations = conversations.concat(result);
-          });
-          connection.commit((err3) => {
-            if (err3) {
-              console.log(err3);
-              connection.rollback(() => {
-                connection.release();
-                throw err3;
-              });
-            }
-            return resolve(conversations);
-          });
-          connection.release();
+        this.db.query(sql2, [userId], (err, result2) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result1.concat(result2));
         });
       });
     });
+
+    //const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
+    //const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
   }
   static async searchUsers(searchInput) {
     const phrases = searchInput.split(" ");
@@ -225,61 +231,18 @@ class DbAccess {
 
   static async getFriends(userId) {
     return new Promise((resolve, reject) => {
-      let conversations = [];
-      this.db.getConnection((err, connection) => {
+      const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
+      const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
+
+      this.db.query(sql, [userId], (err, result1) => {
         if (err) {
           return reject(err);
         }
-        connection.beginTransaction((err2) => {
-          if (err2) return reject(err2);
-          // SELECT *, friend.firstName AS "IMIE"
-          // FROM friendships
-          // JOIN users ON friendships.user1 = users.id
-          // JOIN messages ON messages.friendshipId = friendships.id
-          // JOIN users AS friend ON friendships.user2 = friend.id
-          // WHERE users.id = 30
-          // ORDER BY messages.time DESC
-          // LIMIT 1;
-
-          // SELECT *, friend.firstName AS "IMIE"
-          // FROM friendships
-          // JOIN users ON friendships.user2 = users.id
-          // JOIN messages ON messages.friendshipId = friendships.jid
-          // JOIN users AS friend ON friendships.user1 = friend.id
-          // WHERE users.id = 30
-          // ORDER BY messages.time DESC
-          // LIMIT 1;
-          const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
-          const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
-          connection.query(sql, [userId], (err3, result) => {
-            if (err3) {
-              connection.rollback(() => {
-                connection.release();
-                return reject(err3);
-              });
-            }
-            conversations = result;
-          });
-          connection.query(sql2, [userId], (err3, result) => {
-            if (err3) {
-              connection.rollback(() => {
-                connection.release();
-                return reject(err3);
-              });
-            }
-            conversations = conversations.concat(result);
-          });
-          connection.commit((err3) => {
-            if (err3) {
-              console.log(err3);
-              connection.rollback(() => {
-                connection.release();
-                throw err3;
-              });
-            }
-            return resolve(conversations);
-          });
-          connection.release();
+        this.db.query(sql2, [userId], (err, result2) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result1.concat(result2));
         });
       });
     });

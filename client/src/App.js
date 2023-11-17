@@ -13,10 +13,11 @@ import FriendsRequests from "./components/pages/Friends/FriendsRequests";
 import Account from "./components//pages/Account/Account";
 
 import { ApiProvider } from "./contexts/ApiContext";
+import { SocketProvider } from "./contexts/SocketContext";
 
 function App() {
   const navigate = useNavigate();
-  const [conversationId, setConversationId] = useState(0);
+  const [conversationId, setConversationId] = useState(-1);
 
   const displayConversation = (conversationId) => {
     setConversationId(conversationId);
@@ -26,50 +27,52 @@ function App() {
     <>
       <div id="container">
         <ApiProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Aside
-                    displayConversation={(conversationId) => {
-                      displayConversation(conversationId);
-                    }}
-                  />
-                  <Navbar />
-                </>
-              }
-            >
+          <SocketProvider>
+            <Routes>
               <Route
                 path="/"
-                element={<Messenger conversationId={conversationId} />}
-              />
-              <Route
-                path="friends"
                 element={
-                  <main>
-                    <Friends />
-                  </main>
+                  <>
+                    <Aside
+                      displayConversation={(conversationId) => {
+                        displayConversation(conversationId);
+                      }}
+                    />
+                    <Navbar />
+                  </>
                 }
               >
-                <Route path="" element={<FriendsList />} />
-                <Route path="add" element={<FriendsAdd />} />
-                <Route path="requests" element={<FriendsRequests />} />
+                <Route
+                  path="/"
+                  element={<Messenger conversationId={conversationId} />}
+                />
+                <Route
+                  path="friends"
+                  element={
+                    <main>
+                      <Friends />
+                    </main>
+                  }
+                >
+                  <Route path="" element={<FriendsList />} />
+                  <Route path="add" element={<FriendsAdd />} />
+                  <Route path="requests" element={<FriendsRequests />} />
+                </Route>
+                <Route path="settings" element={<main>settings</main>} />
+                <Route
+                  path="account"
+                  element={
+                    <main>
+                      <Account />
+                    </main>
+                  }
+                />
               </Route>
-              <Route path="settings" element={<main>settings</main>} />
-              <Route
-                path="account"
-                element={
-                  <main>
-                    <Account />
-                  </main>
-                }
-              />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="*" element={<main>404</main>} />
-          </Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="*" element={<main>404</main>} />
+            </Routes>
+          </SocketProvider>
         </ApiProvider>
       </div>
     </>

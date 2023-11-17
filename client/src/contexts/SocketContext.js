@@ -1,32 +1,75 @@
-// import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import io from "socket.io-client";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import { ApiContext } from "./ApiContext";
 
-// export const SocketContext = React.createContext();
+export const SocketContext = React.createContext();
 
-// export function SocketProvider({ children }) {
-//   const [activeConversationId, setActiveConversationId] = useState(-1);
-//   const [messages, setMessages] = useState([]);
-//   const [conversationList, setConversationList] = useState([]); // for aside
+export function SocketProvider({ children }) {
+  const [activeConversationId, setActiveConversationId] = useState(-1);
+  // const [messages, setMessages] = useState([]);
+  const [conversationList, setConversationList] = useState([]); // for aside
+  const [connectionEstablished, setConnectionEstablished] = useState(false);
 
-//   useEffect(() => {
-//     const socketHelper = socket.current;
+  const fetchConversationsApi = useContext(ApiContext).fetchConversations;
 
-//     socketHelper.on("receive-message", (message, senderId) => {
-//       setMessages((prevMessages) => [
-//         ...prevMessages,
-//         { senderId: senderId, message: message },
-//       ]);
-//     });
+  let socket = undefined;
+  const getToken = useContext(ApiContext).getToken;
 
-//     return () => {
-//       socketHelper.off("receive-message");
-//     };
-//   });
-//   const APIADDRESS = "http://localhost:3001";
-//   const navigate = useNavigate();
+  const establishConnection = () => {
+    //if token exists, connect to socket
+    if (getToken()) {
+      socket = io("http://localhost:3001", {
+        query: {
+          token: getToken(),
+        },
+      });
+      console.log("connected to socket");
+    }
+  };
 
-//   const x = {};
+  const fetchConversations = () => {
+    fetchConversationsApi().then((x) => setConversationList(x));
+    // setTimeout(() => {
+    //   setConversationList([
+    //     {
+    //       id: 1,
+    //       name: "test",
+    //       firstName: "test",
+    //       lastName: "test",
+    //     },
+    //   ]);
+    // }, 2000);
+  };
 
-//   return <SocketContext.Provider value={x}>{children}</SocketContext.Provider>;
-// }
+  useEffect(() => {
+    if (connectionEstablished) {
+      socket.on("receive-message", (message, senderId) => {
+        // setMessages((prevMessages) => [
+        //   ...prevMessages,
+        //   { senderId: senderId, message: message },
+        // ]);
+        setConversationList([
+          {
+            id: 1,
+            name: "test",
+            firstName: "test",
+            lastName: "test",
+          },
+        ]);
+      });
+    }
+  }, [connectionEstablished]);
+
+  //   return () => {
+  //     socketHelper.off("receive-message");
+  //   };
+  // });
+  const x = {
+    conversations: conversationList,
+    fetchConversations: fetchConversations,
+    establishConnection: establishConnection,
+  };
+
+  return <SocketContext.Provider value={x}>{children}</SocketContext.Provider>;
+}
