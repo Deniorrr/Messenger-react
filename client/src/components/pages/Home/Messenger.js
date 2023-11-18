@@ -3,6 +3,7 @@ import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { ApiContext } from "../../../contexts/ApiContext";
+import { SocketContext } from "../../../contexts/SocketContext";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 
@@ -15,31 +16,35 @@ function Messenger(props) {
     })
   );
 
-  const [messages, setMessages] = useState([]);
+  //const [messages, setMessages] = useState([]);
   const [decodedToken, setDecodedToken] = useState({});
 
-  const fetchMessages = useContext(ApiContext).fetchMessages;
-  const sendMessageApi = useContext(ApiContext).sendMessage;
+  const messages = useContext(SocketContext).messages;
+  const conversationId = useContext(SocketContext).activeConversationId;
+  //const fetchMessages = useContext(ApiContext).fetchMessages;
+  //const sendMessageApi = useContext(ApiContext).sendMessage;
+  const sendMessageContext = useContext(SocketContext).sendMessage;
   const getToken = useContext(ApiContext).getToken;
 
-  useEffect(() => {
-    const socketHelper = socket.current;
+  // useEffect(() => {
+  //   //const socketHelper = socket.current;
 
-    socketHelper.on("receive-message", (message, senderId) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { senderId: senderId, message: message },
-      ]);
-    });
+  //   // socketHelper.on("receive-message", (message, senderId) => {
+  //   //   setMessages((prevMessages) => [
+  //   //     ...prevMessages,
+  //   //     { senderId: senderId, message: message },
+  //   //   ]);
+  //   // });
 
-    return () => {
-      socketHelper.off("receive-message");
-    };
-  });
+  //   return () => {
+  //     socketHelper.off("receive-message");
+  //   };
+  // });
 
   const sendMessage = (message) => {
     if (message === "") return;
-    socket.current.emit("send-message", props.conversationId, message);
+    sendMessageContext(message);
+    //socket.current.emit("send-message", props.conversationId, message);
     // sendMessageApi(props.conversationId, message)
     //   .then(() => {
     //     setMessages([
@@ -52,22 +57,22 @@ function Messenger(props) {
     //   });
   };
 
-  useEffect(() => {
-    try {
-      setDecodedToken(jwtDecode(getToken()));
-    } catch (err) {
-      return;
-    }
-    fetchMessages(props.conversationId)
-      .then((res) => {
-        setMessages(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [props.conversationId, fetchMessages, getToken]);
+  // useEffect(() => {
+  //   try {
+  //     setDecodedToken(jwtDecode(getToken()));
+  //   } catch (err) {
+  //     return;
+  //   }
+  //   // fetchMessages(props.conversationId)
+  //   //   .then((res) => {
+  //   //     setMessages(res);
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     console.log(err);
+  //   //   });
+  // }, [props.conversationId, fetchMessages, getToken]);
 
-  if (props.conversationId < 0) return <main>Select a conversation</main>;
+  if (conversationId < 0) return <main>Select a conversation</main>;
 
   const friendData = {
     name: "Denis",
@@ -79,7 +84,8 @@ function Messenger(props) {
     const elements = messages.map((x) => (
       <MessageSingle
         messageText={x.message}
-        isMyMessage={x.senderId === decodedToken.id}
+        isMyMessage={x.isMyMessage}
+        key={x.id}
       />
     ));
     return elements;
@@ -92,7 +98,7 @@ function Messenger(props) {
             {friendData.name[0] + friendData.surname[0]}
           </div>
         </div>
-        <main className={styles.messages}>{renderMessages()}</main>
+        <div className={styles.messages}>{renderMessages()}</div>
         <MessageInput sendMessage={(message) => sendMessage(message)} />
       </div>
     </main>

@@ -10,7 +10,7 @@ function ConversationList(props) {
   //const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
-
+  const activeConversationId = useContext(SocketContext).activeConversationId;
   const fetchConversations = useContext(SocketContext).fetchConversations;
   //const fetchConversations = useContext(ApiContext).fetchConversations;
   const data = useContext(SocketContext).conversations;
@@ -27,18 +27,20 @@ function ConversationList(props) {
     fetchConversations();
   }, []);
 
-  const [activeConversationId, setActiveConversationId] = useState(0);
+  //const [activeConversationId, setActiveConversationId] = useState(0);
 
-  const changeActiveConversation = (conversationId) => {
-    setActiveConversationId(conversationId);
-    props.displayConversation(conversationId);
-  };
+  // const changeActiveConversation = (conversationId) => {
+  //   setActiveConversationId(conversationId);
+  //   useContext(SocketContext).setActiveConversationId(conversationId);
+  //   //props.displayConversation(conversationId);
+  // };
 
   const renderConversationList = () => {
     if (data === null) return <div>Loading...</div>;
     let elements = filteredData.map((details) => (
       <ConversationListSingle
-        displayConversation={(id) => changeActiveConversation(id)}
+        key={details.id}
+        //displayConversation={(id) => changeActiveConversation(id)}
         details={details}
         isActive={details.id === activeConversationId}
       />

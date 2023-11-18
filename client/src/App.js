@@ -17,12 +17,12 @@ import { SocketProvider } from "./contexts/SocketContext";
 
 function App() {
   const navigate = useNavigate();
-  const [conversationId, setConversationId] = useState(-1);
+  //const [conversationId, setConversationId] = useState(-1);
 
-  const displayConversation = (conversationId) => {
-    setConversationId(conversationId);
-    navigate("/");
-  };
+  // const displayConversation = (conversationId) => {
+  //   setConversationId(conversationId);
+  //   navigate("/");
+  // };
   return (
     <>
       <div id="container">
@@ -33,18 +33,14 @@ function App() {
                 path="/"
                 element={
                   <>
-                    <Aside
-                      displayConversation={(conversationId) => {
-                        displayConversation(conversationId);
-                      }}
-                    />
+                    <Aside />
                     <Navbar />
                   </>
                 }
               >
                 <Route
                   path="/"
-                  element={<Messenger conversationId={conversationId} />}
+                  element={<Messenger /*conversationId={conversationId}*/ />}
                 />
                 <Route
                   path="friends"
@@ -89,6 +85,7 @@ function App() {
 //wysyłanie wiadomości
 //odbieranie wiadomości
 //wyszukiwanie znajomych aside
+//odbieranie wiadomości //websocket
 
 //TODO
 
@@ -99,7 +96,6 @@ function App() {
 //blokowanie userów
 //widok usera, żeby można było wysłać link do profilu
 
-//odbieranie wiadomości //websocket
 //zmiana statusu usera //online, offline, away
 //zmiana opisu usera
 //ustawienie pseudonimu

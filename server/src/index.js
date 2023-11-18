@@ -26,7 +26,9 @@ io.on("connection", (socket) => {
     socket.on("send-message", (conversationId, message) => {
       DbAccess.sendMessage(conversationId, user.id, message)
         .then(() => {
-          io.to(conversationId).emit("receive-message", message, user.id);
+          socket.broadcast
+            .to(conversationId)
+            .emit("receive-message", message, user.id, conversationId);
         })
         .catch((err) => {
           console.log(err);

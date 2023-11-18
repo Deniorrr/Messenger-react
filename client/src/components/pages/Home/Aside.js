@@ -4,7 +4,7 @@ import ConversationList from "./ConversationList";
 import arrowIcon from "../../../assets/arrow.svg";
 import styles from "../../style/aside.module.scss";
 
-function Aside(props) {
+function Aside() {
   const [isAsideHidden, setIsAsideHidden] = useState(false);
 
   const changeAsideVisibility = () => {
@@ -21,9 +21,9 @@ function Aside(props) {
         </button>
       </div>
       <ConversationList
-        displayConversation={(conversationId) => {
-          props.displayConversation(conversationId);
-        }}
+        // displayConversation={(conversationId) => {
+        //   props.displayConversation(conversationId);
+        // }}
         changeAsideVisibility={() => setAsideVisibility(false)}
       />
     </aside>

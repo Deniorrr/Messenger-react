@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../../style/aside.module.scss";
+import { SocketContext } from "../../../contexts/SocketContext";
 
 function ConversationListSingle(props) {
+  const setConversationId = useContext(SocketContext).setActiveConversationId;
   const details = props.details;
   return (
     <li
       onClick={() => {
-        props.displayConversation(details.id);
+        setConversationId(details.id);
+        //props.displayConversation(details.id);
       }}
       className={props.isActive ? styles.active : ""}
     >
