@@ -85,11 +85,12 @@ app.post("/login", async (req, res) => {
     .then((result) => {
       const user = { email: email, id: result[0].id };
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-      res.send(accessToken);
+      console.log(accessToken);
+      return res.send(accessToken);
     })
     .catch((err) => {
       console.log("ERROR", err);
-      res.status(500).send(err);
+      return res.status(409).send(err);
     });
 });
 

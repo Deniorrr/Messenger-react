@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
 //import axios from "axios";
@@ -6,24 +6,27 @@ import { ApiContext } from "../../../contexts/ApiContext";
 
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loginApi = useContext(ApiContext).login;
   const login = () => {
     loginApi(email, password)
       .then((res) => {
+        console.log(res);
         localStorage.setItem("accessToken", res);
         navigate("/");
       })
       .catch((err) => {
-        alert(err);
+        setErrorMessage(err);
       });
   };
 
   return (
     <div className={styles["form-wrapper"]}>
       <div className={styles.form}>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         <h1>Login</h1>
         <input
           type="email"

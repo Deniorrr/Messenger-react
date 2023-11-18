@@ -62,6 +62,7 @@ export function SocketProvider({ children }) {
   }, [activeConversationId, fetchMessages]);
 
   const fetchConversations = () => {
+    if (connectionEstablished === false) return;
     fetchConversationsApi().then((x) => {
       const convList = x.map((conversation) => {
         return {

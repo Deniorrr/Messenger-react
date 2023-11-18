@@ -43,7 +43,6 @@ class DbAccess {
     });
     return result;
   }
-  //przy login można skorzystać Promise.all, żeby jednocześnie sprawdzić czy email istnieje i czy hasło jest poprawne
   static async loginUser(email, password) {
     const sql = `SELECT * FROM users WHERE email = ?`;
     return new Promise((resolve, reject) => {
@@ -56,10 +55,13 @@ class DbAccess {
           console.log(result.length);
           return reject("email not found");
         }
-        if (bcrypt.compare(password, result[0].password)) {
+        bcrypt.compare(password, result[0].password).then((res) => {
+          if (!res) {
+            return reject("wrong password");
+          }
+          console.log(result);
           return resolve(result);
-        }
-        reject("wrong password");
+        });
       });
     });
   }

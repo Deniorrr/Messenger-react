@@ -32,27 +32,36 @@ export function ApiProvider({ children }) {
       if (password !== confirmPasswd) {
         return Promise.reject("Passwords do not match");
       }
-      try {
-        const res = await axios.post(APIADDRESS + "/register", {
+      return await axios
+        .post(APIADDRESS + "/register", {
           firstName: firstName,
           lastName: lastName,
           email: email,
           password: password,
+        })
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          throw err.response.data;
         });
-        return res.data;
-      } catch (err) {
-        throw err.response.data;
-      }
     },
     login: async function (email, password) {
       if (!email || !password) {
         return Promise.reject("Please fill in all fields");
       }
-      const res = await axios.post(APIADDRESS + "/login", {
-        email: email,
-        password: password,
-      });
-      return res.data;
+      return await axios
+        .post(APIADDRESS + "/login", {
+          email: email,
+          password: password,
+        })
+        .then((res) => {
+          console.log(res);
+          return res.data;
+        })
+        .catch((err) => {
+          return Promise.reject(err.response.data);
+        });
     },
     logout: async function () {
       //Not an actual api call, but it's a good place to put it
