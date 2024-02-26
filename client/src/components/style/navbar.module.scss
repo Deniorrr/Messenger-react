@@ -1,7 +1,7 @@
 @import "./variables";
 
 .navbar {
-  background-color: $color-dark-2;
+  background-color: $color-primary-dark2;
   position: fixed;
   top: 0;
   width: 100%;
@@ -48,7 +48,7 @@
     padding: 10px;
     transition-duration: 0.2s;
     transition-timing-function: ease-out;
-    border-top: 5px solid $color-dark-2;
+    border-top: 5px solid $color-primary-dark2;
   }
   a:hover {
     background-color: $color-secondary-transparent;

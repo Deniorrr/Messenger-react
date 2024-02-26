@@ -36,9 +36,10 @@
     width: 100%;
     display: flex;
     padding: 1rem;
+    padding-top: 0;
     position: sticky;
     bottom: 0;
-    background-color: $color-dark-2;
+    background-color: $color-primary-dark2;
     input {
       font-family: "Kanit", sans-serif;
       margin: 1rem;
@@ -47,7 +48,7 @@
       width: 100%;
       border: none;
       border-radius: 1rem 0 0 1rem;
-      background-color: $color-dark-2;
+      background-color: $color-primary-dark2;
       color: #fff;
       font-size: 16px;
       outline: 2px solid $color-secondary;
@@ -60,7 +61,7 @@
       cursor: pointer;
       margin: 1rem 0;
       padding: 0.2rem 0.5rem;
-      background-color: $color-dark-2;
+      background-color: $color-primary-dark2;
       border: none;
       border-radius: 0 1rem 1rem 0;
       outline: 2px solid $color-secondary;

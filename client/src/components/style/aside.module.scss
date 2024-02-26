@@ -1,7 +1,7 @@
 @import "./variables";
 
 aside {
-  background-color: $color-secondary-dark;
+  background-color: $color-primary-dark;
   padding: 0 20px;
   width: 300px;
   min-width: 300px;
@@ -24,7 +24,7 @@ aside {
       border: none;
       cursor: pointer;
       padding: 5px;
-      background-color: $color-dark-2;
+      background-color: $color-primary-dark2;
       border-radius: 5px;
       outline: 2px solid $color-primary;
       img {
@@ -69,11 +69,11 @@ aside {
     ul {
       list-style-type: none;
       li {
-        background-color: $color-dark-2;
+        background-color: $color-primary-dark2;
         margin: 15px 0;
         border-radius: 10px;
         cursor: pointer;
-        border: 2px solid $color-dark-2;
+        border: 2px solid $color-primary-dark2;
         transition-duration: 0.2s;
         display: flex;
         .portrait {
