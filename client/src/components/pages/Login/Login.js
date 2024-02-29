@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
-//import axios from "axios";
-import { ApiContext } from "../../../contexts/ApiContext";
+import api from "../../../Api/ApiConfig";
+// import { ApiContext } from "../../../contexts/ApiContext";
 
 function Login() {
   const navigate = useNavigate();
@@ -10,16 +10,35 @@ function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loginApi = useContext(ApiContext).login;
+  // const loginApi = useContext(ApiContext).login;
+  // const login = () => {
+  //   loginApi(email, password)
+  //     .then((res) => {
+  //       console.log(res);
+  //       localStorage.setItem("accessToken", res);
+  //       navigate("/");
+  //     })
+  //     .catch((err) => {
+  //       setErrorMessage(err);
+  //     });
+  // };
   const login = () => {
-    loginApi(email, password)
+    setErrorMessage("");
+    if (!email || !password) {
+      return setErrorMessage("Please fill in all fields");
+    }
+    api
+      .post("login", {
+        email: email,
+        password: password,
+      })
       .then((res) => {
-        console.log(res);
-        localStorage.setItem("accessToken", res);
+        localStorage.setItem("accessToken", res.data);
         navigate("/");
       })
       .catch((err) => {
-        setErrorMessage(err);
+        console.log(err);
+        setErrorMessage(err.response.data);
       });
   };
 

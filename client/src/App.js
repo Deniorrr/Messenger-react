@@ -1,7 +1,7 @@
 import "./components/style/app.scss";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/pages/Navbar/Navbar";
 import Aside from "./components/pages/Home/Aside";
 import Messenger from "./components/pages/Home/Messenger";
 import Login from "./components/pages/Login/Login";
@@ -88,7 +88,7 @@ function App() {
 //odbieranie wiadomości //websocket
 
 //TODO
-
+//poprawienie kodu navbara DONT REPEAT YOURSELF
 //dodać napisy przy login i register
 //sortuj znajomych po ostatniej wiadomości
 //usuwanie userów

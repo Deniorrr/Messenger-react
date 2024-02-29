@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import styles from "./style/navbar.module.scss";
-import { SocketContext } from "../contexts/SocketContext";
+import styles from "../../style/navbar.module.scss";
+import { SocketContext } from "../../../contexts/SocketContext";
 
 function Navbar() {
   const navigate = useNavigate();

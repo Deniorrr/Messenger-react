@@ -1,15 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ApiContext } from "../../../contexts/ApiContext";
+// import { ApiContext } from "../../../contexts/ApiContext";
 
 function Account() {
   const navigate = useNavigate();
-  const logoutApi = useContext(ApiContext).logout;
 
   const logout = () => {
-    logoutApi().then(() => {
-      navigate("/login");
-    });
+    localStorage.removeItem("accessToken");
+    navigate("/login");
   };
 
   return (

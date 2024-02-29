@@ -9,6 +9,7 @@ export function ApiProvider({ children }) {
   const navigate = useNavigate();
 
   const checkError = (err) => {
+    console.log(err);
     const status = err.response.status ? err.response.status : err;
     if (status === 401 || status === 403) {
       return navigate("/login");
@@ -24,50 +25,49 @@ export function ApiProvider({ children }) {
   };
   const x = {
     getToken: getToken,
-    register: async (firstName, lastName, email, password, confirmPasswd) => {
-      if (!firstName || !lastName || !email || !password || !confirmPasswd) {
-        return Promise.reject("Please fill in all fields");
-      }
+    // register: async (firstName, lastName, email, password, confirmPasswd) => {
+    //   if (!firstName || !lastName || !email || !password || !confirmPasswd) {
+    //     return Promise.reject("Please fill in all fields");
+    //   }
 
-      if (password !== confirmPasswd) {
-        return Promise.reject("Passwords do not match");
-      }
-      return await axios
-        .post(APIADDRESS + "/register", {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        })
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          throw err.response.data;
-        });
-    },
-    login: async function (email, password) {
-      if (!email || !password) {
-        return Promise.reject("Please fill in all fields");
-      }
-      return await axios
-        .post(APIADDRESS + "/login", {
-          email: email,
-          password: password,
-        })
-        .then((res) => {
-          console.log(res);
-          return res.data;
-        })
-        .catch((err) => {
-          return Promise.reject(err.response.data);
-        });
-    },
-    logout: async function () {
-      //Not an actual api call, but it's a good place to put it
-      localStorage.removeItem("accessToken");
-      return;
-    },
+    //   if (password !== confirmPasswd) {
+    //     return Promise.reject("Passwords do not match");
+    //   }
+    //   return await axios
+    //     .post(APIADDRESS + "/register", {
+    //       firstName: firstName,
+    //       lastName: lastName,
+    //       email: email,
+    //       password: password,
+    //     })
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       throw err.response.data;
+    //     });
+    // },
+    // login: async function (email, password) {
+    //   if (!email || !password) {
+    //     return Promise.reject("Please fill in all fields");
+    //   }
+    //   return await axios
+    //     .post(APIADDRESS + "/login", {
+    //       email: email,
+    //       password: password,
+    //     })
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       return Promise.reject(err.response.data);
+    //     });
+    // },
+    // logout: async function () {
+    //   //Not an actual api call, but it's a good place to put it
+    //   localStorage.removeItem("accessToken");
+    //   return;
+    // },
     fetchConversations: async function () {
       return axios
         .get(APIADDRESS + "/conversations", {

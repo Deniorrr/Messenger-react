@@ -59,7 +59,7 @@ export function SocketProvider({ children }) {
       });
       setMessages(x);
     });
-  }, [activeConversationId, fetchMessages]);
+  }, [activeConversationId, fetchMessages, decodedToken, setMessages]);
 
   const fetchConversations = () => {
     if (connectionEstablished === false) return;
@@ -112,7 +112,6 @@ export function SocketProvider({ children }) {
     setActiveConversationId: (conversationId) => {
       setActiveConversationId(conversationId);
       navigate("/");
-      console.log(conversationId);
     },
     activeConversationId: activeConversationId,
     conversations: conversationList,

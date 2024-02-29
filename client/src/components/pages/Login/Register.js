@@ -1,7 +1,8 @@
 import { React, useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
-import { ApiContext } from "../../../contexts/ApiContext";
+import api from "../../../Api/ApiConfig";
+//import { ApiContext } from "../../../contexts/ApiContext";
 
 function Register() {
   const navigate = useNavigate();
@@ -14,16 +15,41 @@ function Register() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const registerApi = useContext(ApiContext).register;
+  //const registerApi = useContext(ApiContext).register;
+
+  // const register = () => {
+  //   registerApi(firstName, lastName, email, password, confirmPasswd)
+  //     .then((res) => {
+  //       localStorage.setItem("accessToken", res);
+  //       navigate("/");
+  //     })
+  //     .catch((err) => {
+  //       setErrorMessage(err);
+  //     });
+  // };
 
   const register = () => {
-    registerApi(firstName, lastName, email, password, confirmPasswd)
+    if (!firstName || !lastName || !email || !password || !confirmPasswd) {
+      return setErrorMessage("Please fill in all fields");
+    }
+
+    if (password !== confirmPasswd) {
+      return setErrorMessage("Passwords do not match");
+    }
+
+    api
+      .post("register", {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      })
       .then((res) => {
-        localStorage.setItem("accessToken", res);
+        localStorage.setItem("accessToken", res.data);
         navigate("/");
       })
       .catch((err) => {
-        setErrorMessage(err);
+        setErrorMessage(err.response.data);
       });
   };
 
