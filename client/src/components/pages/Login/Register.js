@@ -1,7 +1,7 @@
 import { React, useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../../style/loginRegister.module.scss";
-import api from "../../../Api/ApiConfig";
+import api from "../../../api/ApiConfig";
 //import { ApiContext } from "../../../contexts/ApiContext";
 
 function Register() {
