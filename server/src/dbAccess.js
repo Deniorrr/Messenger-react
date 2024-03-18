@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const e = require("express");
 
@@ -6,7 +6,7 @@ class DbAccess {
   static db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "qwerty123",
     database: "messenger",
   });
   static async registerUser(firstName, lastName, email, password) {
