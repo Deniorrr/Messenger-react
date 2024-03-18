@@ -88,6 +88,8 @@ function App() {
 //odbieranie wiadomości //websocket
 
 //TODO
+//po dodaniu znajomego, wyświetl konwersację na aside
+//brak możliwości dodania do znajomych drugi raz
 //poprawienie kodu navbara DONT REPEAT YOURSELF
 //dodać napisy przy login i register
 //sortuj znajomych po ostatniej wiadomości

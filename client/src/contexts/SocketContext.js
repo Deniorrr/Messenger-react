@@ -142,7 +142,7 @@ export function SocketProvider({ children }) {
       ...messages,
       {
         message: message,
-        id: "temporal id:" + Math.random(),
+        id: "temporal id:" + Math.random(), // not the actual id, just a temporal id to show the message in the UI
         isMyMessage: true,
       },
     ]);

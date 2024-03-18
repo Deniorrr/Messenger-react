@@ -1,18 +1,57 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ApiContext } from "../../../contexts/ApiContext";
+import api from "../../../api/ApiConfig";
 
 function FriendsRequests() {
   const [requests, setRequests] = useState([]);
+  const getToken = useContext(ApiContext).getToken;
+  // const fetchFriendRequests = useContext(ApiContext).fetchFriendRequests;
+  //const acceptRequest = useContext(ApiContext).acceptRequest;
+  //const rejectRequest = useContext(ApiContext).rejectRequest;
 
-  const fetchFriendRequests = useContext(ApiContext).fetchFriendRequests;
-  const acceptRequest = useContext(ApiContext).acceptRequest;
-  const rejectRequest = useContext(ApiContext).rejectRequest;
+  const acceptRequest = (requestId) => {
+    api
+      .post(
+        "/accept-request",
+        { requestId: requestId },
+        {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+          },
+        }
+      )
+      .then(() => {
+        setRequests(requests.filter((request) => request.id !== requestId));
+      });
+  };
+
+  const rejectRequest = (requestId) => {
+    api
+      .post(
+        "/reject-request",
+        { requestId: requestId },
+        {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+          },
+        }
+      )
+      .then(() => {
+        setRequests(requests.filter((request) => request.id !== requestId));
+      });
+  };
 
   useEffect(() => {
-    fetchFriendRequests().then((res) => {
-      console.log(res);
-      setRequests(res);
-    });
+    api
+      .get("/friend-requests", {
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setRequests(res.data);
+      });
   }, []);
 
   return (

@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 export const ApiContext = React.createContext();
 
 export function ApiProvider({ children }) {
-  const APIADDRESS = "http://localhost:3001";
+  // const APIADDRESS = "http://localhost:3001";
   const navigate = useNavigate();
 
-  const checkError = (err) => {
-    console.log(err);
-    const status = err.response.status ? err.response.status : err;
-    if (status === 401 || status === 403) {
-      return navigate("/login");
-    }
-  };
+  // const checkError = (err) => {
+  //   console.log(err);
+  //   const status = err.response.status ? err.response.status : err;
+  //   if (status === 401 || status === 403) {
+  //     return navigate("/login");
+  //   }
+  // };
 
   const getToken = function () {
     if (!localStorage.getItem("accessToken")) {
@@ -68,165 +68,165 @@ export function ApiProvider({ children }) {
     //   localStorage.removeItem("accessToken");
     //   return;
     // },
-    fetchConversations: async function () {
-      return axios
-        .get(APIADDRESS + "/conversations", {
-          headers: {
-            Authorization: "Bearer " + getToken(),
-          },
-        })
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-    },
-    fetchFriends: async function () {
-      const res = await axios
-        .get(APIADDRESS + "/friends", {
-          headers: {
-            Authorization: "Bearer " + getToken(),
-          },
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res.data;
-    },
-    searchUsers: async function (searchInput) {
-      const res = await axios
-        .get(APIADDRESS + "/search-users?searchInput=" + searchInput, {
-          headers: {
-            Authorization: "Bearer " + getToken(),
-          },
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res.data;
-    },
-    addFriend: async (userId) => {
-      const res = await axios
-        .post(
-          APIADDRESS + "/add-friend",
-          {
-            userId: userId,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        )
-        .then((res) => {
-          return Promise.resolve(res.data);
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res.data;
-    },
-    fetchFriendRequests: async function () {
-      const res = await axios
-        .get(APIADDRESS + "/friend-requests", {
-          headers: {
-            Authorization: "Bearer " + getToken(),
-          },
-        })
-        .then((res) => {
-          return Promise.resolve(res.data);
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res;
-    },
-    acceptRequest: async function (requestId) {
-      const res = await axios
-        .post(
-          APIADDRESS + "/accept-request",
-          {
-            requestId: requestId,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        )
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res;
-    },
-    rejectRequest: async function (requestId) {
-      const res = await axios
-        .post(
-          APIADDRESS + "/reject-request",
-          {
-            requestId: requestId,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        )
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res;
-    },
-    fetchMessages: async function (conversationId) {
-      const res = await axios
-        .post(
-          APIADDRESS + "/messages",
-          {
-            conversationId: conversationId,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        )
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res;
-    },
-    sendMessage: async function (conversationId, message) {
-      const res = await axios
-        .post(
-          APIADDRESS + "/send-message",
-          {
-            conversationId: conversationId,
-            message: message,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        )
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          checkError(err);
-        });
-      return res;
-    },
+    // fetchConversations: async function () {
+    //   return axios
+    //     .get(APIADDRESS + "/conversations", {
+    //       headers: {
+    //         Authorization: "Bearer " + getToken(),
+    //       },
+    //     })
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    // },
+    // fetchFriends: async function () {
+    //   const res = await axios
+    //     .get(APIADDRESS + "/friends", {
+    //       headers: {
+    //         Authorization: "Bearer " + getToken(),
+    //       },
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res.data;
+    // },
+    // searchUsers: async function (searchInput) {
+    //   const res = await axios
+    //     .get(APIADDRESS + "/search-users?searchInput=" + searchInput, {
+    //       headers: {
+    //         Authorization: "Bearer " + getToken(),
+    //       },
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res.data;
+    // },
+    // addFriend: async (userId) => {
+    //   const res = await axios
+    //     .post(
+    //       APIADDRESS + "/add-friend",
+    //       {
+    //         userId: userId,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: "Bearer " + getToken(),
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       return Promise.resolve(res.data);
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res.data;
+    // },
+    // fetchFriendRequests: async function () {
+    //   const res = await axios
+    //     .get(APIADDRESS + "/friend-requests", {
+    //       headers: {
+    //         Authorization: "Bearer " + getToken(),
+    //       },
+    //     })
+    //     .then((res) => {
+    //       return Promise.resolve(res.data);
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res;
+    // },
+    // acceptRequest: async function (requestId) {
+    //   const res = await axios
+    //     .post(
+    //       APIADDRESS + "/accept-request",
+    //       {
+    //         requestId: requestId,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: "Bearer " + getToken(),
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res;
+    // },
+    // rejectRequest: async function (requestId) {
+    //   const res = await axios
+    //     .post(
+    //       APIADDRESS + "/reject-request",
+    //       {
+    //         requestId: requestId,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: "Bearer " + getToken(),
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res;
+    // },
+    // fetchMessages: async function (conversationId) {
+    //   const res = await axios
+    //     .post(
+    //       APIADDRESS + "/messages",
+    //       {
+    //         conversationId: conversationId,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: "Bearer " + getToken(),
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res;
+    // },
+    // sendMessage: async function (conversationId, message) {
+    //   const res = await axios
+    //     .post(
+    //       APIADDRESS + "/send-message",
+    //       {
+    //         conversationId: conversationId,
+    //         message: message,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: "Bearer " + getToken(),
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       return res.data;
+    //     })
+    //     .catch((err) => {
+    //       checkError(err);
+    //     });
+    //   return res;
+    // },
   };
 
   return <ApiContext.Provider value={x}>{children}</ApiContext.Provider>;

@@ -6,24 +6,45 @@ import {
   faCheck,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import api from "../../../api/ApiConfig";
 
 function FriendsAdd() {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
-  const searchUsers = useContext(ApiContext).searchUsers;
+  const getToken = useContext(ApiContext).getToken;
+  //const searchUsers = useContext(ApiContext).searchUsers;
   const addFriendApi = useContext(ApiContext).addFriend;
 
-  const search = () => {
-    searchUsers(searchInput).then((data) => {
-      //for each user, set a value if user added or not
-      data.forEach((user) => {
-        user.added = false;
+  const searchUsers = () => {
+    api
+      .get("/search-users?searchInput=" + searchInput, {
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        data.forEach((user) => {
+          user.added = false;
+        });
+        setUsers(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      console.log(data);
-      setUsers(data);
-    });
   };
+
+  // const search = () => {
+  //   searchUsers(searchInput).then((data) => {
+  //     //for each user, set a value if user added or not
+  //     data.forEach((user) => {
+  //       user.added = false;
+  //     });
+  //     console.log(data);
+  //     setUsers(data);
+  //   });
+  // };
 
   const changeRequestStatus = (userId, status) => {
     setUsers(
@@ -38,8 +59,17 @@ function FriendsAdd() {
 
   const addFriend = (userId) => {
     changeRequestStatus(userId, "loading");
-    addFriendApi(userId)
-      .then((data) => {
+    api
+      .post(
+        "/add-friend",
+        { userId: userId },
+        {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+          },
+        }
+      )
+      .then(() => {
         changeRequestStatus(userId, true);
       })
       .catch((error) => {
@@ -66,7 +96,7 @@ function FriendsAdd() {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-        <button onClick={() => search()}>Search</button>
+        <button onClick={() => searchUsers()}>Search</button>
       </div>
       <div className="result">
         {users.map((user) => {

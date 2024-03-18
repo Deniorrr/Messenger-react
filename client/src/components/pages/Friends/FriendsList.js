@@ -1,16 +1,31 @@
 import React, { useState, useContext } from "react";
 import { ApiContext } from "../../../contexts/ApiContext";
+import api from "../../../api/ApiConfig";
 
 function FriendsList() {
   const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const fetchFriends = useContext(ApiContext).fetchFriends;
+  const getToken = useContext(ApiContext).getToken;
+  //const fetchFriends = useContext(ApiContext).fetchFriends;
+
+  const fetchFriends = () => {
+    api
+      .get("/friends", {
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
+      })
+      .then((res) => {
+        console.log("RES", res.data);
+        setFriends(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useState(() => {
-    fetchFriends().then((res) => {
-      console.log(res);
-      setFriends(res);
-    });
+    fetchFriends();
   }, []);
 
   return (
@@ -25,6 +40,7 @@ function FriendsList() {
       </div>
       <div className="friends">
         {friends.map((friend) => {
+          console.log(friend);
           return (
             <div className="friend">
               <div className="friend__avatar">

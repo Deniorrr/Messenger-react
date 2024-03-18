@@ -140,7 +140,6 @@ class DbAccess {
   }
   static async addFriendRequest(userId, friendId) {
     const sql = `INSERT INTO friendships (user1, user2, status) VALUES (?, ?,"pending")`;
-    console.log(sql);
     return new Promise((resolve, reject) => {
       this.db.query(sql, [userId, friendId], (err, result) => {
         if (err) {
