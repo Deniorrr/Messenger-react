@@ -12,7 +12,6 @@ import FriendsList from "./components/pages/Friends/FriendsList";
 import FriendsRequests from "./components/pages/Friends/FriendsRequests";
 import Account from "./components//pages/Account/Account";
 
-import { ApiProvider } from "./contexts/ApiContext";
 import { SocketProvider } from "./contexts/SocketContext";
 
 function App() {
@@ -26,50 +25,48 @@ function App() {
   return (
     <>
       <div id="container">
-        <ApiProvider>
-          <SocketProvider>
-            <Routes>
+        <SocketProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Aside />
+                  <Navbar />
+                </>
+              }
+            >
               <Route
                 path="/"
+                element={<Messenger /*conversationId={conversationId}*/ />}
+              />
+              <Route
+                path="friends"
                 element={
-                  <>
-                    <Aside />
-                    <Navbar />
-                  </>
+                  <main>
+                    <Friends />
+                  </main>
                 }
               >
-                <Route
-                  path="/"
-                  element={<Messenger /*conversationId={conversationId}*/ />}
-                />
-                <Route
-                  path="friends"
-                  element={
-                    <main>
-                      <Friends />
-                    </main>
-                  }
-                >
-                  <Route path="" element={<FriendsList />} />
-                  <Route path="add" element={<FriendsAdd />} />
-                  <Route path="requests" element={<FriendsRequests />} />
-                </Route>
-                <Route path="settings" element={<main>settings</main>} />
-                <Route
-                  path="account"
-                  element={
-                    <main>
-                      <Account />
-                    </main>
-                  }
-                />
+                <Route path="" element={<FriendsList />} />
+                <Route path="add" element={<FriendsAdd />} />
+                <Route path="requests" element={<FriendsRequests />} />
               </Route>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="*" element={<main>404</main>} />
-            </Routes>
-          </SocketProvider>
-        </ApiProvider>
+              <Route path="settings" element={<main>settings</main>} />
+              <Route
+                path="account"
+                element={
+                  <main>
+                    <Account />
+                  </main>
+                }
+              />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<main>404</main>} />
+          </Routes>
+        </SocketProvider>
       </div>
     </>
   );

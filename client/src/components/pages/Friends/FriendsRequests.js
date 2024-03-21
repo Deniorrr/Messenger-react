@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { ApiContext } from "../../../contexts/ApiContext";
 import api from "../../../api/ApiConfig";
+import useAuthToken from "../../../hooks/useAuthToken";
 
 function FriendsRequests() {
   const [requests, setRequests] = useState([]);
-  const getToken = useContext(ApiContext).getToken;
+  const authToken = useAuthToken();
   // const fetchFriendRequests = useContext(ApiContext).fetchFriendRequests;
   //const acceptRequest = useContext(ApiContext).acceptRequest;
   //const rejectRequest = useContext(ApiContext).rejectRequest;
@@ -16,7 +16,7 @@ function FriendsRequests() {
         { requestId: requestId },
         {
           headers: {
-            Authorization: "Bearer " + getToken(),
+            Authorization: "Bearer " + authToken,
           },
         }
       )
@@ -32,7 +32,7 @@ function FriendsRequests() {
         { requestId: requestId },
         {
           headers: {
-            Authorization: "Bearer " + getToken(),
+            Authorization: "Bearer " + authToken,
           },
         }
       )
@@ -45,7 +45,7 @@ function FriendsRequests() {
     api
       .get("/friend-requests", {
         headers: {
-          Authorization: "Bearer " + getToken(),
+          Authorization: "Bearer " + authToken,
         },
       })
       .then((res) => {

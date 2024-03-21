@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
-import { ApiContext } from "./ApiContext";
 import api from "../api/ApiConfig";
 import { jwtDecode } from "jwt-decode";
+import useAuthToken from "../hooks/useAuthToken";
 
 export const SocketContext = React.createContext();
 
@@ -14,25 +14,23 @@ export function SocketProvider({ children }) {
   const [conversationList, setConversationList] = useState([]); // for aside
   const [connectionEstablished, setConnectionEstablished] = useState(false);
   const [decodedToken, setDecodedToken] = useState({});
-  // const fetchConversationsApi = useContext(ApiContext).fetchConversations;
-  // const fetchMessages = useContext(ApiContext).fetchMessages;
 
   const [socket, setSocket] = useState(null);
-  const getToken = useContext(ApiContext).getToken;
+  const authToken = useAuthToken();
 
   const establishConnection = () => {
     //if token exists, connect to socket
-    if (getToken()) {
-      setSocket(
-        io("http://localhost:3001", {
-          query: {
-            token: getToken(),
-          },
-        })
-      );
-      setDecodedToken(jwtDecode(getToken()));
-      setConnectionEstablished(true);
-    }
+    //if (authToken) {
+    setSocket(
+      io("http://localhost:3001", {
+        query: {
+          token: authToken,
+        },
+      })
+    );
+    setDecodedToken(jwtDecode(authToken));
+    setConnectionEstablished(true);
+    //}
   };
 
   const updateConversationList = (conversationId, message, senderId) => {
@@ -57,7 +55,7 @@ export function SocketProvider({ children }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${getToken()}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       )
@@ -85,7 +83,7 @@ export function SocketProvider({ children }) {
     api
       .get("/conversations", {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${authToken}`,
         },
       })
       .then((res) => {

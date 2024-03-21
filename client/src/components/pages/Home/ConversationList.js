@@ -3,16 +3,13 @@ import { useState, useEffect, useContext } from "react";
 import ConversationListSingle from "./ConversationListSingle";
 import searchIcon from "../../../assets/search.svg";
 import styles from "../../style/aside.module.scss";
-import { ApiContext } from "../../../contexts/ApiContext";
 import { SocketContext } from "../../../contexts/SocketContext";
 
 function ConversationList(props) {
-  //const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const activeConversationId = useContext(SocketContext).activeConversationId;
   const fetchConversations = useContext(SocketContext).fetchConversations;
-  //const fetchConversations = useContext(ApiContext).fetchConversations;
   const data = useContext(SocketContext).conversations;
 
   useEffect(() => {

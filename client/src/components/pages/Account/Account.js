@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-// import { ApiContext } from "../../../contexts/ApiContext";
+import useAuthToken from "../../../hooks/useAuthToken";
 
 function Account() {
   const navigate = useNavigate();
+  const authToken = useAuthToken();
 
   const logout = () => {
     localStorage.removeItem("accessToken");
@@ -13,7 +14,8 @@ function Account() {
   return (
     <div>
       <button onClick={() => logout()}>LOGOUT</button>
-      Account
+      <h1>Account</h1>
+      <p>{authToken}</p>
     </div>
   );
 }

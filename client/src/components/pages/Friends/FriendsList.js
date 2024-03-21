@@ -1,18 +1,18 @@
 import React, { useState, useContext } from "react";
-import { ApiContext } from "../../../contexts/ApiContext";
+import useAuthToken from "../../../hooks/useAuthToken";
 import api from "../../../api/ApiConfig";
 
 function FriendsList() {
   const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const getToken = useContext(ApiContext).getToken;
+  const authToken = useAuthToken();
   //const fetchFriends = useContext(ApiContext).fetchFriends;
 
   const fetchFriends = () => {
     api
       .get("/friends", {
         headers: {
-          Authorization: "Bearer " + getToken(),
+          Authorization: "Bearer " + authToken(),
         },
       })
       .then((res) => {

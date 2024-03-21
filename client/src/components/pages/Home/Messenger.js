@@ -2,16 +2,16 @@ import { React, useEffect, useState, useContext, useRef } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
-import { ApiContext } from "../../../contexts/ApiContext";
 import { SocketContext } from "../../../contexts/SocketContext";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
+import useAuthToken from "../../../hooks/useAuthToken";
 
 function Messenger(props) {
   const socket = useRef(
     io("http://localhost:3001", {
       query: {
-        token: useContext(ApiContext).getToken(),
+        token: useAuthToken(),
       },
     })
   );
@@ -24,7 +24,6 @@ function Messenger(props) {
   //const fetchMessages = useContext(ApiContext).fetchMessages;
   //const sendMessageApi = useContext(ApiContext).sendMessage;
   const sendMessageContext = useContext(SocketContext).sendMessage;
-  const getToken = useContext(ApiContext).getToken;
 
   // useEffect(() => {
   //   //const socketHelper = socket.current;

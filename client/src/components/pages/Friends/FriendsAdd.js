@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { ApiContext } from "../../../contexts/ApiContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useAuthToken from "../../../hooks/useAuthToken";
 import {
   faSpinner,
   faCheck,
@@ -12,15 +12,13 @@ function FriendsAdd() {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
-  const getToken = useContext(ApiContext).getToken;
-  //const searchUsers = useContext(ApiContext).searchUsers;
-  const addFriendApi = useContext(ApiContext).addFriend;
+  const authToken = useAuthToken();
 
   const searchUsers = () => {
     api
       .get("/search-users?searchInput=" + searchInput, {
         headers: {
-          Authorization: "Bearer " + getToken(),
+          Authorization: "Bearer " + authToken,
         },
       })
       .then((res) => {
@@ -65,7 +63,7 @@ function FriendsAdd() {
         { userId: userId },
         {
           headers: {
-            Authorization: "Bearer " + getToken(),
+            Authorization: "Bearer " + authToken,
           },
         }
       )
