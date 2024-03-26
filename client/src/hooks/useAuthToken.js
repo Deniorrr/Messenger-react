@@ -7,7 +7,8 @@ export default function useAuthToken() {
   const getToken = () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      return navigate("/login");
+      navigate("/login");
+      return;
     } else {
       return token;
     }

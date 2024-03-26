@@ -12,7 +12,7 @@ function FriendsList() {
     api
       .get("/friends", {
         headers: {
-          Authorization: "Bearer " + authToken(),
+          Authorization: "Bearer " + authToken,
         },
       })
       .then((res) => {

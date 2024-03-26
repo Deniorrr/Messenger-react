@@ -106,7 +106,7 @@ app.get("/conversations", autenticateToken, async (req, res) => {
 
 app.get("/search-users", autenticateToken, async (req, res) => {
   const searchInput = req.query.searchInput;
-  DbAccess.searchUsers(searchInput)
+  DbAccess.searchUsers(req.user.id, searchInput)
     .then((result) => {
       res.send(result);
     })

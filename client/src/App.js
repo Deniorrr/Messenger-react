@@ -25,48 +25,48 @@ function App() {
   return (
     <>
       <div id="container">
-        <SocketProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <SocketProvider>
                   <Aside />
                   <Navbar />
-                </>
+                </SocketProvider>
+              </>
+            }
+          >
+            <Route
+              path="/"
+              element={<Messenger /*conversationId={conversationId}*/ />}
+            />
+            <Route
+              path="friends"
+              element={
+                <main>
+                  <Friends />
+                </main>
               }
             >
-              <Route
-                path="/"
-                element={<Messenger /*conversationId={conversationId}*/ />}
-              />
-              <Route
-                path="friends"
-                element={
-                  <main>
-                    <Friends />
-                  </main>
-                }
-              >
-                <Route path="" element={<FriendsList />} />
-                <Route path="add" element={<FriendsAdd />} />
-                <Route path="requests" element={<FriendsRequests />} />
-              </Route>
-              <Route path="settings" element={<main>settings</main>} />
-              <Route
-                path="account"
-                element={
-                  <main>
-                    <Account />
-                  </main>
-                }
-              />
+              <Route path="" element={<FriendsList />} />
+              <Route path="add" element={<FriendsAdd />} />
+              <Route path="requests" element={<FriendsRequests />} />
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="*" element={<main>404</main>} />
-          </Routes>
-        </SocketProvider>
+            <Route path="settings" element={<main>settings</main>} />
+            <Route
+              path="account"
+              element={
+                <main>
+                  <Account />
+                </main>
+              }
+            />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<main>404</main>} />
+        </Routes>
       </div>
     </>
   );
@@ -83,9 +83,9 @@ function App() {
 //odbieranie wiadomości
 //wyszukiwanie znajomych aside
 //odbieranie wiadomości //websocket
+//po dodaniu znajomego, wyświetl konwersację na aside
 
 //TODO
-//po dodaniu znajomego, wyświetl konwersację na aside
 //brak możliwości dodania do znajomych drugi raz
 //poprawienie kodu navbara DONT REPEAT YOURSELF
 //dodać napisy przy login i register

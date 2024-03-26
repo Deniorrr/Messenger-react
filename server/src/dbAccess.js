@@ -70,36 +70,43 @@ class DbAccess {
     return new Promise((resolve, reject) => {
       const sql = `
       SELECT friend.firstName,
-      friend.lastName,
-      friendships.id AS "id",
-      messages.senderId,
-      TIME_FORMAT(messages.time, "%H:%i") AS "time",
-      messages.message,
-      sender.firstName AS "senderName"
-      FROM friendships
-      JOIN users ON friendships.user1 = users.id
-      JOIN messages ON messages.friendshipId = friendships.id
-      JOIN users AS friend ON friendships.user2 = friend.id
-      JOIN users AS sender ON sender.id = messages.senderId
-      WHERE users.id = ?
-      ORDER BY messages.time DESC
-      LIMIT 1;`;
+       friend.lastName,
+       friendships.id AS "id",
+       latest_message.senderId,
+       TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
+       latest_message.message,
+       users.firstName AS "senderName"
+        FROM users
+        JOIN friendships ON users.id = friendships.user1
+        JOIN users AS friend ON friendships.user2 = friend.id
+        LEFT JOIN (
+        SELECT messages.friendshipId, MAX(time) AS max_time
+        FROM messages
+        GROUP BY messages.friendshipId
+        ) AS latest_message_time ON friendships.id = latest_message_time.friendshipId
+        LEFT JOIN messages AS latest_message ON latest_message_time.friendshipId = latest_message.friendshipId AND latest_message_time.max_time = latest_message.time
+        WHERE friendships.status = "accepted" AND
+        users.id = ?;`;
+
       const sql2 = `
       SELECT friend.firstName,
-      friend.lastName,
-      friendships.id AS "id",
-      messages.senderId,
-      TIME_FORMAT(messages.time, "%H:%i") AS "time",
-      messages.message,
-      sender.firstName AS "senderName"
-      FROM friendships
-      JOIN users ON friendships.user2 = users.id
-      JOIN messages ON messages.friendshipId = friendships.id
-      JOIN users AS friend ON friendships.user1 = friend.id
-      JOIN users AS sender ON sender.id = messages.senderId
-      WHERE users.id = ?
-      ORDER BY messages.time DESC
-      LIMIT 1;`;
+       friend.lastName,
+       friendships.id AS "id",
+       latest_message.senderId,
+       TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
+       latest_message.message,
+       users.firstName AS "senderName"
+        FROM users
+        JOIN friendships ON users.id = friendships.user2
+        JOIN users AS friend ON friendships.user1 = friend.id
+        LEFT JOIN (
+        SELECT messages.friendshipId, MAX(time) AS max_time
+        FROM messages
+        GROUP BY messages.friendshipId
+        ) AS latest_message_time ON friendships.id = latest_message_time.friendshipId
+        LEFT JOIN messages AS latest_message ON latest_message_time.friendshipId = latest_message.friendshipId AND latest_message_time.max_time = latest_message.time
+        WHERE friendships.status = "accepted" AND
+        users.id = ?;`;
       this.db.query(sql, [userId], (err, result1) => {
         if (err) {
           return reject(err);
@@ -116,9 +123,9 @@ class DbAccess {
     //const sql = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user1 = ? AND user2 = users.id`;
     //const sql2 = `SELECT friendships.id, friendships.user1, friendships.user2, users.firstName, users.lastName, users.email FROM friendships, users WHERE status = "accepted" AND user2 = ? AND user1 = users.id`;
   }
-  static async searchUsers(searchInput) {
+  static async searchUsers(userId, searchInput) {
     const phrases = searchInput.split(" ");
-
+    console.log(userId);
     let sql = `SELECT * FROM users WHERE`;
     let parameters = [];
     for (let i = 0; i < phrases.length; i++) {

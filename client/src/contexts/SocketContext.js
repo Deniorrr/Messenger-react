@@ -20,17 +20,17 @@ export function SocketProvider({ children }) {
 
   const establishConnection = () => {
     //if token exists, connect to socket
-    //if (authToken) {
-    setSocket(
-      io("http://localhost:3001", {
-        query: {
-          token: authToken,
-        },
-      })
-    );
-    setDecodedToken(jwtDecode(authToken));
-    setConnectionEstablished(true);
-    //}
+    if (authToken) {
+      setSocket(
+        io("http://localhost:3001", {
+          query: {
+            token: authToken,
+          },
+        })
+      );
+      setDecodedToken(jwtDecode(authToken));
+      setConnectionEstablished(true);
+    }
   };
 
   const updateConversationList = (conversationId, message, senderId) => {
@@ -98,6 +98,9 @@ export function SocketProvider({ children }) {
         });
         console.log(convList);
         setConversationList(convList);
+      })
+      .catch((err) => {
+        console.log(err.response.status); // can create a hook to manage api errors
       });
   };
   // const fetchConversations = () => {
