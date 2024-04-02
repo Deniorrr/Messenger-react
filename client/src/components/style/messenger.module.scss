@@ -9,6 +9,7 @@
     color: #fff;
   }
   .messages {
+    overflow: scroll;
     .message {
       p {
         max-width: 60%;

@@ -15,61 +15,28 @@ function Messenger(props) {
       },
     })
   );
-
+  const messagesRef = useRef(null);
   //const [messages, setMessages] = useState([]);
   const [decodedToken, setDecodedToken] = useState({});
 
   const messages = useContext(SocketContext).messages;
   const conversationId = useContext(SocketContext).activeConversationId;
-  //const fetchMessages = useContext(ApiContext).fetchMessages;
-  //const sendMessageApi = useContext(ApiContext).sendMessage;
   const sendMessageContext = useContext(SocketContext).sendMessage;
-
-  // useEffect(() => {
-  //   //const socketHelper = socket.current;
-
-  //   // socketHelper.on("receive-message", (message, senderId) => {
-  //   //   setMessages((prevMessages) => [
-  //   //     ...prevMessages,
-  //   //     { senderId: senderId, message: message },
-  //   //   ]);
-  //   // });
-
-  //   return () => {
-  //     socketHelper.off("receive-message");
-  //   };
-  // });
 
   const sendMessage = (message) => {
     if (message === "") return;
     sendMessageContext(message);
-    //socket.current.emit("send-message", props.conversationId, message);
-    // sendMessageApi(props.conversationId, message)
-    //   .then(() => {
-    //     setMessages([
-    //       ...messages,
-    //       { senderId: decodedToken.id, message: message },
-    //     ]);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
-  // useEffect(() => {
-  //   try {
-  //     setDecodedToken(jwtDecode(getToken()));
-  //   } catch (err) {
-  //     return;
-  //   }
-  //   // fetchMessages(props.conversationId)
-  //   //   .then((res) => {
-  //   //     setMessages(res);
-  //   //   })
-  //   //   .catch((err) => {
-  //   //     console.log(err);
-  //   //   });
-  // }, [props.conversationId, fetchMessages, getToken]);
+  const scrollToBottom = () => {
+    if (!messagesRef.current) return;
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    console.log("scrolling");
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   if (conversationId < 0) return <main>Select a conversation</main>;
 
@@ -97,7 +64,9 @@ function Messenger(props) {
             {friendData.name[0] + friendData.surname[0]}
           </div>
         </div>
-        <div className={styles.messages}>{renderMessages()}</div>
+        <div className={styles.messages} ref={messagesRef}>
+          {renderMessages()}
+        </div>
         <MessageInput sendMessage={(message) => sendMessage(message)} />
       </div>
     </main>

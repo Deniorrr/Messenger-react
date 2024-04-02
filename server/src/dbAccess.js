@@ -126,13 +126,26 @@ class DbAccess {
   static async searchUsers(userId, searchInput) {
     const phrases = searchInput.split(" ");
     console.log(userId);
-    let sql = `SELECT * FROM users WHERE`;
+    let sql = `SELECT id, firstName, lastName, email
+    FROM users
+    WHERE id <> 30
+    AND id NOT IN (
+        SELECT user2
+        FROM friendships
+        WHERE user1 = 30
+        UNION
+        SELECT user1
+        FROM friendships
+        WHERE user2 = 30
+    ) AND (`;
     let parameters = [];
     for (let i = 0; i < phrases.length; i++) {
       sql += ` UPPER(firstName) LIKE ? OR UPPER(lastName) LIKE ? OR UPPER(email) LIKE ?`;
       parameters.push(`%${phrases[i]}%`, `%${phrases[i]}%`, `%${phrases[i]}%`);
       if (i !== phrases.length - 1) {
         sql += " OR";
+      } else {
+        sql += ")";
       }
     }
     return new Promise((resolve, reject) => {
