@@ -13,10 +13,10 @@ export function SocketProvider({ children }) {
   const [messages, setMessages] = useState([]);
   const [conversationList, setConversationList] = useState([]); // for aside
   const [connectionEstablished, setConnectionEstablished] = useState(false);
-  const [decodedToken, setDecodedToken] = useState({});
+  const authToken = useAuthToken();
+  const [decodedToken, setDecodedToken] = useState(jwtDecode(authToken));
 
   const [socket, setSocket] = useState(null);
-  const authToken = useAuthToken();
 
   const establishConnection = () => {
     //if token exists, connect to socket
@@ -28,14 +28,10 @@ export function SocketProvider({ children }) {
           },
         })
       );
-      setDecodedToken(jwtDecode(authToken));
+      //setDecodedToken(jwtDecode(authToken));
       setConnectionEstablished(true);
     }
   };
-
-  useEffect(() => {
-    console.log("conversationList changed", conversationList);
-  }, [conversationList]);
 
   const updateConversationList = (conversationId, message, senderId) => {
     const updated = conversationList.map((conversation) => {
@@ -91,6 +87,7 @@ export function SocketProvider({ children }) {
       })
       .then((res) => {
         const convList = res.data.map((conversation) => {
+          console.log(conversation, decodedToken.id);
           return {
             ...conversation,
             senderName:

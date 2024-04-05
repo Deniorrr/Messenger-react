@@ -75,7 +75,7 @@ class DbAccess {
        latest_message.senderId,
        TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
        latest_message.message,
-       users.firstName AS "senderName"
+       sender.firstName AS "senderName"
         FROM users
         JOIN friendships ON users.id = friendships.user1
         JOIN users AS friend ON friendships.user2 = friend.id
@@ -85,6 +85,7 @@ class DbAccess {
         GROUP BY messages.friendshipId
         ) AS latest_message_time ON friendships.id = latest_message_time.friendshipId
         LEFT JOIN messages AS latest_message ON latest_message_time.friendshipId = latest_message.friendshipId AND latest_message_time.max_time = latest_message.time
+        LEFT JOIN users AS sender ON latest_message.senderId = sender.id
         WHERE friendships.status = "accepted" AND
         users.id = ?;`;
 
@@ -95,7 +96,7 @@ class DbAccess {
        latest_message.senderId,
        TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
        latest_message.message,
-       users.firstName AS "senderName"
+       sender.firstName AS "senderName"
         FROM users
         JOIN friendships ON users.id = friendships.user2
         JOIN users AS friend ON friendships.user1 = friend.id
@@ -105,6 +106,7 @@ class DbAccess {
         GROUP BY messages.friendshipId
         ) AS latest_message_time ON friendships.id = latest_message_time.friendshipId
         LEFT JOIN messages AS latest_message ON latest_message_time.friendshipId = latest_message.friendshipId AND latest_message_time.max_time = latest_message.time
+        LEFT JOIN users AS sender ON latest_message.senderId = sender.id
         WHERE friendships.status = "accepted" AND
         users.id = ?;`;
       this.db.query(sql, [userId], (err, result1) => {
