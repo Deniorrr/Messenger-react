@@ -13,7 +13,7 @@ function MessageInput(props) {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       sendMessage();
-      event.preventDefault(); // Prevents the addition of a new line in the input when pressing 'Enter'
+      event.preventDefault();
     }
   };
 

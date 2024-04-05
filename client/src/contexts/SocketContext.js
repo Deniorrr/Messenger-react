@@ -33,6 +33,10 @@ export function SocketProvider({ children }) {
     }
   };
 
+  useEffect(() => {
+    console.log("conversationList changed", conversationList);
+  }, [conversationList]);
+
   const updateConversationList = (conversationId, message, senderId) => {
     const updated = conversationList.map((conversation) => {
       if (conversation.id !== conversationId) return conversation;
@@ -66,20 +70,19 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (activeConversationId === -1) return;
-    fetchMessages(activeConversationId).then((x) => {
-      x = x.map((message) => {
+    fetchMessages(activeConversationId).then((result) => {
+      const messages = result.map((message) => {
         return {
           message: message.message,
           id: message.id,
           isMyMessage: message.senderId === decodedToken.id,
         };
       });
-      setMessages(x);
+      setMessages(messages);
     });
   }, [activeConversationId, decodedToken, setMessages]);
 
   const fetchConversations = () => {
-    console.log("fetching conversations");
     api
       .get("/conversations", {
         headers: {
@@ -96,13 +99,16 @@ export function SocketProvider({ children }) {
                 : conversation.senderName,
           };
         });
-        console.log(convList);
         setConversationList(convList);
       })
       .catch((err) => {
         console.log(err.response.status); // can create a hook to manage api errors
       });
   };
+
+  useEffect(() => {
+    fetchConversations();
+  }, []);
   // const fetchConversations = () => {
   //   if (connectionEstablished === false) return;
   //   fetchConversationsApi().then((x) => {
@@ -122,6 +128,7 @@ export function SocketProvider({ children }) {
   useEffect(() => {
     if (connectionEstablished) {
       socket.on("receive-message", (message, senderId, conversationId) => {
+        console.log(conversationList);
         if (conversationId === activeConversationId) {
           setMessages(() => [
             ...messages,
@@ -135,7 +142,13 @@ export function SocketProvider({ children }) {
         updateConversationList(conversationId, message, senderId);
       });
     }
-  }, [connectionEstablished, socket, activeConversationId, messages]);
+  }, [
+    connectionEstablished,
+    socket,
+    activeConversationId,
+    messages,
+    conversationList,
+  ]);
 
   const sendMessage = (message) => {
     socket.emit("send-message", activeConversationId, message);

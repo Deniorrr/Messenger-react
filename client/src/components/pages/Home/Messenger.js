@@ -3,21 +3,10 @@ import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { SocketContext } from "../../../contexts/SocketContext";
-import { jwtDecode } from "jwt-decode";
-import io from "socket.io-client";
-import useAuthToken from "../../../hooks/useAuthToken";
 
 function Messenger(props) {
-  const socket = useRef(
-    io("http://localhost:3001", {
-      query: {
-        token: useAuthToken(),
-      },
-    })
-  );
   const messagesRef = useRef(null);
   //const [messages, setMessages] = useState([]);
-  const [decodedToken, setDecodedToken] = useState({});
 
   const messages = useContext(SocketContext).messages;
   const conversationId = useContext(SocketContext).activeConversationId;

@@ -115,6 +115,7 @@ class DbAccess {
           if (err) {
             return reject(err);
           }
+          console.log(result1.concat(result2));
           resolve(result1.concat(result2));
         });
       });
