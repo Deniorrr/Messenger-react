@@ -94,6 +94,7 @@ function App() {
 //wygasanie tokenów
 //blokowanie userów
 //widok usera, żeby można było wysłać link do profilu
+//popup informujący o zrobieniu czegoś w znajomych
 
 //zmiana statusu usera //online, offline, away
 //zmiana opisu usera

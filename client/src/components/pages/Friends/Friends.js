@@ -5,19 +5,43 @@ import styles from "../../style/friends.module.scss";
 function Friends() {
   return (
     <>
-      <nav id={styles["friendsNavbar"]}>
-        <ul>
-          <li>
-            <NavLink to="/friends">List</NavLink>
-          </li>
-          <li>
-            <NavLink to="/friends/add">Add friend</NavLink>
-          </li>
-          <li>
-            <NavLink to="/friends/requests">Friend requests</NavLink>
-          </li>
-        </ul>
-      </nav>
+      <div id={styles["navbarWrapper"]}>
+        <nav id={styles["friendsNavbar"]}>
+          <ul>
+            <li>
+              <NavLink
+                to="/friends"
+                end //to be active only when the link is an exact match
+                className={({ isActive }) =>
+                  isActive ? styles["active-link"] : ""
+                }
+              >
+                List
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/friends/add"
+                className={({ isActive }) =>
+                  isActive ? styles["active-link"] : ""
+                }
+              >
+                Add friend
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/friends/requests"
+                className={({ isActive }) =>
+                  isActive ? styles["active-link"] : ""
+                }
+              >
+                Friend requests
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </div>
       <Outlet />
     </>
   );

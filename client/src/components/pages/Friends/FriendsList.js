@@ -1,12 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import useAuthToken from "../../../hooks/useAuthToken";
 import api from "../../../api/ApiConfig";
+import FriendsListItem from "../../dumb_components/FriendsListItem";
+import styles from "../../style/friends.module.scss";
 
 function FriendsList() {
   const [friends, setFriends] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const authToken = useAuthToken();
-  //const fetchFriends = useContext(ApiContext).fetchFriends;
 
   const fetchFriends = () => {
     api
@@ -30,24 +31,24 @@ function FriendsList() {
 
   return (
     <div>
-      <div className="search">
+      {/* <div className="search">
         <input
           type="text"
           placeholder="Search"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-      </div>
-      <div className="friends">
+      </div> */}
+      <div className={styles.friendsList}>
         {friends.map((friend) => {
-          console.log(friend);
           return (
-            <div className="friend">
-              <div className="friend__avatar">
-                <img src={friend.avatar} alt={friend.name} />
-              </div>
-              <div className="friend__name">{friend.firstName}</div>
-            </div>
+            <FriendsListItem key={friend.id} friend={friend} />
+            // <div className="friend">
+            //   <div className="friend__avatar">
+            //     <img src={friend.avatar} alt={friend.name} />
+            //   </div>
+            //   <div className="friend__name">{friend.firstName}</div>
+            // </div>
           );
         })}
       </div>
