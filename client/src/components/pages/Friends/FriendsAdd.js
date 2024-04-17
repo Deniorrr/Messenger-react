@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuthToken from "../../../hooks/useAuthToken";
+import styles from "../../style/friends.module.scss";
 import {
   faSpinner,
   faCheck,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import api from "../../../api/ApiConfig";
+import FriendsListItem from "../../dumb_components/FriendsListItem";
 
 function FriendsAdd() {
   const [users, setUsers] = useState([]);
@@ -76,13 +78,13 @@ function FriendsAdd() {
       });
   };
 
-  const renderButtonStyle = (added) => {
-    if (added === "loading") {
-      return <FontAwesomeIcon icon={faSpinner} />;
-    } else if (added) {
-      return <FontAwesomeIcon icon={faCheck} />;
+  const getButtonStyle = (user) => {
+    if (user.added === "loading") {
+      return faSpinner;
+    } else if (user.added) {
+      return faCheck;
     } else {
-      return <FontAwesomeIcon icon={faUserPlus} />;
+      return faUserPlus;
     }
   };
   return (
@@ -96,25 +98,36 @@ function FriendsAdd() {
         />
         <button onClick={() => searchUsers()}>Search</button>
       </div>
-      <div className="result">
+      <div className={styles.friendsList}>
         {users.map((user) => {
           return (
-            <div className="user">
-              <div className="user__avatar">
-                {user.firstName[0] + user.lastName[0]}
-                {/* <img src={} alt={user.name} /> */}
-              </div>
-              <div className="user__name">
-                {user.firstName + " " + user.lastName}
-              </div>
-              <button
-                onClick={() => {
-                  addFriend(user.id);
-                }}
-              >
-                {renderButtonStyle(user.added)}
-              </button>
-            </div>
+            // <div className="user">
+            //   <div className="user__avatar">
+            //     {user.firstName[0] + user.lastName[0]}
+            //     {/* <img src={} alt={user.name} /> */}
+            //   </div>
+            //   <div className="user__name">
+            //     {user.firstName + " " + user.lastName}
+            //   </div>
+            //   <button
+            //     onClick={() => {
+            //       addFriend(user.id);
+            //     }}
+            //   >
+            //     {renderButtonStyle(user.added)}
+            //   </button>
+            // </div>
+            <FriendsListItem
+              key={user.id}
+              friend={user}
+              buttons={[
+                {
+                  label: "Add Friend",
+                  icon: getButtonStyle(user),
+                  onClick: () => addFriend(user.id),
+                },
+              ]}
+            />
           );
         })}
       </div>

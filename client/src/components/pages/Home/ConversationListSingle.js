@@ -5,6 +5,14 @@ import { SocketContext } from "../../../contexts/SocketContext";
 function ConversationListSingle(props) {
   const setConversationId = useContext(SocketContext).setActiveConversationId;
   const details = props.details;
+
+  const renderMessage = () => {
+    if (details.message === null) {
+      return <p className={styles["lessVisible"]}>No messages yet</p>;
+    } else {
+      return details.senderName + ": " + details.message;
+    }
+  };
   return (
     <li
       onClick={() => {
@@ -23,9 +31,7 @@ function ConversationListSingle(props) {
           </p>
           <p className={styles.time}>{details.time}</p>
         </header>
-        <p className={styles.message}>
-          {details.senderName + ": " + details.message}
-        </p>
+        <p className={styles.message}>{renderMessage()}</p>
       </div>
     </li>
   );

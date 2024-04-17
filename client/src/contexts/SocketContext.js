@@ -14,9 +14,15 @@ export function SocketProvider({ children }) {
   const [conversationList, setConversationList] = useState([]); // for aside
   const [connectionEstablished, setConnectionEstablished] = useState(false);
   const authToken = useAuthToken();
-  const [decodedToken, setDecodedToken] = useState(jwtDecode(authToken));
+  const [decodedToken, setDecodedToken] = useState("");
 
   const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    if (authToken) {
+      setDecodedToken(jwtDecode(authToken));
+    }
+  }, [authToken]);
 
   const establishConnection = () => {
     //if token exists, connect to socket
@@ -87,7 +93,6 @@ export function SocketProvider({ children }) {
       })
       .then((res) => {
         const convList = res.data.map((conversation) => {
-          console.log(conversation, decodedToken.id);
           return {
             ...conversation,
             senderName:
@@ -105,7 +110,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     fetchConversations();
-  }, []);
+  }, [decodedToken]);
   // const fetchConversations = () => {
   //   if (connectionEstablished === false) return;
   //   fetchConversationsApi().then((x) => {

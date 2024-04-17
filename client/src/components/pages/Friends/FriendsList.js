@@ -17,7 +17,6 @@ function FriendsList() {
         },
       })
       .then((res) => {
-        console.log("RES", res.data);
         setFriends(res.data);
       })
       .catch((err) => {
@@ -31,24 +30,16 @@ function FriendsList() {
 
   return (
     <div>
-      {/* <div className="search">
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-      </div> */}
       <div className={styles.friendsList}>
         {friends.map((friend) => {
           return (
-            <FriendsListItem key={friend.id} friend={friend} />
-            // <div className="friend">
-            //   <div className="friend__avatar">
-            //     <img src={friend.avatar} alt={friend.name} />
-            //   </div>
-            //   <div className="friend__name">{friend.firstName}</div>
-            // </div>
+            <FriendsListItem
+              key={friend.id}
+              friend={friend}
+              removeButton
+              messageButton
+              buttons={[]}
+            />
           );
         })}
       </div>

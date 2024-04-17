@@ -58,15 +58,13 @@ app.post("/register", async (req, res) => {
   // const password = req.body.password;
   DbAccess.registerUser(firstName, lastName, email, password)
     .then((result) => {
-      console.log("RESULT", result);
       const user = { email: email, id: result };
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-      console.log(accessToken);
       res.send(accessToken);
     })
     .catch((err) => {
       if (err === "EmailIsUsed") {
-        console.log("Email is used");
+        //console.log("Email is used");
         return res.status(409).send("Email is already taken");
       }
       console.log("ERROR", err);
@@ -85,7 +83,6 @@ app.post("/login", async (req, res) => {
     .then((result) => {
       const user = { email: email, id: result[0].id };
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-      console.log(accessToken);
       return res.send(accessToken);
     })
     .catch((err) => {

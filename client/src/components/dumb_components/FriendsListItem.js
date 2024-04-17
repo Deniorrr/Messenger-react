@@ -1,11 +1,15 @@
 import React from "react";
 import styles from "../style/friends.module.scss";
 import Avatar from "./Avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function FriendsListItem(props) {
   const firstName = props.friend.firstName;
   const lastName = props.friend.lastName;
   const email = props.friend.email;
+
+  const buttons = props.buttons;
+
   return (
     <div className={styles.friendsListItem}>
       <div className={styles.avatarWrapper}>
@@ -18,8 +22,11 @@ function FriendsListItem(props) {
         <p>{email}</p>
       </div>
       <div className={styles.friendActions}>
-        <button>Remove</button>
-        <button>Message</button>
+        {buttons.map((button, index) => (
+          <button key={index} onClick={button.onClick} label={button.label}>
+            <FontAwesomeIcon icon={button.icon} />
+          </button>
+        ))}
       </div>
     </div>
   );

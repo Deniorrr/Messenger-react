@@ -131,17 +131,17 @@ class DbAccess {
     console.log(userId);
     let sql = `SELECT id, firstName, lastName, email
     FROM users
-    WHERE id <> 30
+    WHERE id <> ?
     AND id NOT IN (
         SELECT user2
         FROM friendships
-        WHERE user1 = 30
+        WHERE user1 = ?
         UNION
         SELECT user1
         FROM friendships
-        WHERE user2 = 30
+        WHERE user2 = ?
     ) AND (`;
-    let parameters = [];
+    let parameters = [userId, userId, userId];
     for (let i = 0; i < phrases.length; i++) {
       sql += ` UPPER(firstName) LIKE ? OR UPPER(lastName) LIKE ? OR UPPER(email) LIKE ?`;
       parameters.push(`%${phrases[i]}%`, `%${phrases[i]}%`, `%${phrases[i]}%`);
@@ -151,6 +151,7 @@ class DbAccess {
         sql += ")";
       }
     }
+    console.log(sql);
     return new Promise((resolve, reject) => {
       this.db.query(sql, parameters, (err, result) => {
         if (err) {

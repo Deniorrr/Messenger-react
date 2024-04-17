@@ -1,6 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import api from "../../../api/ApiConfig";
 import useAuthToken from "../../../hooks/useAuthToken";
+import styles from "../../style/friends.module.scss";
+import FriendsListItem from "../../dumb_components/FriendsListItem";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 function FriendsRequests() {
   const [requests, setRequests] = useState([]);
@@ -56,31 +60,48 @@ function FriendsRequests() {
 
   return (
     <div>
-      <div className="friends">
+      <div className={styles.friendsList}>
         {requests.map((request) => {
+          console.log(request);
           return (
-            <div className="friend">
-              <div className="friend__avatar">
-                <img src={request.avatar} alt={request.name} />
-              </div>
-              <div className="friend__name">
-                {request.firstName} {request.lastName}
-              </div>
-              <button
-                onClick={() => {
-                  acceptRequest(request.id);
-                }}
-              >
-                Accept
-              </button>
-              <button
-                onClick={() => {
-                  rejectRequest(request.id);
-                }}
-              >
-                Reject
-              </button>
-            </div>
+            // <div className="friend">
+            //   <div className="friend__avatar">
+            //     <img src={request.avatar} alt={request.name} />
+            //   </div>
+            //   <div className="friend__name">
+            //     {request.firstName} {request.lastName}
+            //   </div>
+            //   <button
+            //     onClick={() => {
+            //       acceptRequest(request.id);
+            //     }}
+            //   >
+            //     Accept
+            //   </button>
+            //   <button
+            //     onClick={() => {
+            //       rejectRequest(request.id);
+            //     }}
+            //   >
+            //     Reject
+            //   </button>
+            // </div>
+            <FriendsListItem
+              key={request.id}
+              friend={request}
+              buttons={[
+                {
+                  onClick: () => acceptRequest(request.id),
+                  label: "Accept",
+                  icon: faCheck,
+                },
+                {
+                  onClick: () => rejectRequest(request.id),
+                  label: "Reject",
+                  icon: faCheck,
+                },
+              ]}
+            />
           );
         })}
       </div>
