@@ -16,7 +16,7 @@ function Friends() {
                   isActive ? styles["active-link"] : ""
                 }
               >
-                List
+                Friends
               </NavLink>
             </li>
             <li>
@@ -26,7 +26,7 @@ function Friends() {
                   isActive ? styles["active-link"] : ""
                 }
               >
-                Add friend
+                Add friends
               </NavLink>
             </li>
             <li>

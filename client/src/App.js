@@ -95,6 +95,7 @@ function App() {
 //blokowanie userów
 //widok usera, żeby można było wysłać link do profilu
 //popup informujący o zrobieniu czegoś w znajomych
+//sprawdzenie na backendzie przed usunięciem czy user jest w znajomych
 
 //zmiana statusu usera //online, offline, away
 //zmiana opisu usera

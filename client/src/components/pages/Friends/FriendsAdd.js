@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import useAuthToken from "../../../hooks/useAuthToken";
 import styles from "../../style/friends.module.scss";
 import {
@@ -11,7 +10,7 @@ import api from "../../../api/ApiConfig";
 import FriendsListItem from "../../dumb_components/FriendsListItem";
 
 function FriendsAdd() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const [searchInput, setSearchInput] = useState("");
 
   const authToken = useAuthToken();
@@ -87,8 +86,32 @@ function FriendsAdd() {
       return faUserPlus;
     }
   };
+
+  const renderUsers = () => {
+    if (users === null) return <p></p>;
+    if (users.length === 0) return <p>No users found</p>;
+
+    return users.map((user) => {
+      return (
+        <FriendsListItem
+          key={user.id}
+          friend={user}
+          buttons={[
+            {
+              label: "Add Friend",
+              icon: getButtonStyle(user),
+              onClick: () => addFriend(user.id),
+            },
+          ]}
+        />
+      );
+    });
+  };
   return (
     <div>
+      <div className={styles["header-wrapper"]}>
+        <h2>Add friends</h2>
+      </div>
       <div className="search">
         <input
           type="text"
@@ -98,39 +121,7 @@ function FriendsAdd() {
         />
         <button onClick={() => searchUsers()}>Search</button>
       </div>
-      <div className={styles.friendsList}>
-        {users.map((user) => {
-          return (
-            // <div className="user">
-            //   <div className="user__avatar">
-            //     {user.firstName[0] + user.lastName[0]}
-            //     {/* <img src={} alt={user.name} /> */}
-            //   </div>
-            //   <div className="user__name">
-            //     {user.firstName + " " + user.lastName}
-            //   </div>
-            //   <button
-            //     onClick={() => {
-            //       addFriend(user.id);
-            //     }}
-            //   >
-            //     {renderButtonStyle(user.added)}
-            //   </button>
-            // </div>
-            <FriendsListItem
-              key={user.id}
-              friend={user}
-              buttons={[
-                {
-                  label: "Add Friend",
-                  icon: getButtonStyle(user),
-                  onClick: () => addFriend(user.id),
-                },
-              ]}
-            />
-          );
-        })}
-      </div>
+      <div className={styles.friendsList}>{renderUsers()}</div>
     </div>
   );
 }

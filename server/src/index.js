@@ -188,6 +188,17 @@ app.post("/send-message", autenticateToken, async (req, res) => {
     });
 });
 
+app.delete("/friends/:friendshipId", autenticateToken, async (req, res) => {
+  const friendshipId = req.params.friendshipId;
+  DbAccess.deleteFriendship(friendshipId)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 function autenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // if authHeader is undefined, token will be undefined too

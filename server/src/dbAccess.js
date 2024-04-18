@@ -201,6 +201,29 @@ class DbAccess {
     });
   }
 
+  static async deleteFriendship(friendshipId) {
+    const sql1 = `DELETE FROM messages WHERE friendshipId = ?`;
+    const sql2 = `DELETE FROM friendships WHERE id = ?`;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql1, [friendshipId], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+
+        this.db.query(sql2, [friendshipId], (err, result) => {
+          if (err) {
+            console.log(err);
+            return reject(err);
+          }
+
+          resolve(result);
+        });
+      });
+    });
+  }
+
   static async rejectRequest(requestId, userId) {
     const sql = `DELETE FROM friendships WHERE id = ? AND user2 = ?`;
     return new Promise((resolve, reject) => {

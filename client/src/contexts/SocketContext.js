@@ -70,6 +70,13 @@ export function SocketProvider({ children }) {
       });
   };
 
+  const deleteFromConversationList = (conversationId) => {
+    const updated = conversationList.filter(
+      (conversation) => conversation.id !== conversationId
+    );
+    setConversationList(updated);
+  };
+
   useEffect(() => {
     if (activeConversationId === -1) return;
     fetchMessages(activeConversationId).then((result) => {
@@ -176,6 +183,7 @@ export function SocketProvider({ children }) {
     establishConnection: establishConnection,
     sendMessage: sendMessage,
     messages: messages,
+    deleteFromConversationList: deleteFromConversationList,
   };
 
   return <SocketContext.Provider value={x}>{children}</SocketContext.Provider>;
