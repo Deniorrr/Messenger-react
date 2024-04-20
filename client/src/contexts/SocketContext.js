@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import api from "../api/ApiConfig";
 import { jwtDecode } from "jwt-decode";
 import useAuthToken from "../hooks/useAuthToken";
+import soundEffect from "../assets/notification.wav";
 
 export const SocketContext = React.createContext();
 
@@ -119,9 +120,15 @@ export function SocketProvider({ children }) {
     fetchConversations();
   }, [decodedToken]);
 
+  const playSound = () => {
+    const audio = new Audio(soundEffect);
+    audio.play();
+  };
+
   useEffect(() => {
     if (connectionEstablished) {
       socket.on("receive-message", (message, senderId, conversationId) => {
+        playSound();
         if (conversationId === activeConversationId) {
           setMessages(() => [
             ...messages,
