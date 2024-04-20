@@ -118,26 +118,10 @@ export function SocketProvider({ children }) {
   useEffect(() => {
     fetchConversations();
   }, [decodedToken]);
-  // const fetchConversations = () => {
-  //   if (connectionEstablished === false) return;
-  //   fetchConversationsApi().then((x) => {
-  //     const convList = x.map((conversation) => {
-  //       return {
-  //         ...conversation,
-  //         senderName:
-  //           conversation.senderId === jwtDecode(getToken()).id
-  //             ? "You"
-  //             : conversation.senderName,
-  //       };
-  //     });
-  //     setConversationList(convList);
-  //   });
-  // };
 
   useEffect(() => {
     if (connectionEstablished) {
       socket.on("receive-message", (message, senderId, conversationId) => {
-        console.log(conversationList);
         if (conversationId === activeConversationId) {
           setMessages(() => [
             ...messages,

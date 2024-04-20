@@ -8,7 +8,6 @@ import { SocketContext } from "../../../contexts/SocketContext";
 
 function FriendsList() {
   const [friends, setFriends] = useState(null);
-  const [searchInput, setSearchInput] = useState("");
   const authToken = useAuthToken();
 
   const setConversationId = useContext(SocketContext).setActiveConversationId;
@@ -91,7 +90,7 @@ function FriendsList() {
     });
   };
   return (
-    <div>
+    <div className={styles["friends-section"]}>
       <div className={styles["header-wrapper"]}>
         <h2>Friends</h2>
       </div>

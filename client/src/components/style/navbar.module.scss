@@ -11,16 +11,42 @@
   border-bottom: 3px solid $color-secondary;
   box-shadow: 0px 5px 10px $color-secondary;
   align-items: stretch;
+  .logo {
+    display: flex;
+    @media (max-width: 350px) {
+      display: none;
+    }
+    .logo-text {
+      @media (max-width: 550px) {
+        display: none;
+      }
+      color: $color-primary;
+      font-size: 1.7rem;
+      padding: 10px;
+      span {
+        color: $color-secondary;
+      }
+    }
+    figure {
+      height: 55px;
+      img {
+        height: 100%;
+      }
+    }
+  }
+  // .logo {
+  //   height: 100%;
+  //   figure {
+  //     height: 100%;
+  //     img {
+  //     }
+  //   }
+  // }
   ul {
     display: flex;
     list-style-type: none;
     li {
       padding: 0 10px;
-    }
-  }
-  figure {
-    img {
-      height: 30px;
     }
   }
   .home-icon {

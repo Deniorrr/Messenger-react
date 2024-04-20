@@ -12,18 +12,20 @@ function FriendsListItem(props) {
 
   return (
     <div className={styles.friendsListItem}>
-      <div className={styles.avatarWrapper}>
-        <Avatar friend={props.friend} />
-      </div>
-      <div className={styles.personData}>
-        <h3>
-          {firstName} {lastName}
-        </h3>
-        <p>{email}</p>
+      <div className={styles.friendWrapper}>
+        <div className={styles.avatarWrapper}>
+          <Avatar friend={props.friend} />
+        </div>
+        <div className={styles.personData}>
+          <h3>
+            {firstName} {lastName}
+          </h3>
+          <p>{email}</p>
+        </div>
       </div>
       <div className={styles.friendActions}>
         {buttons.map((button, index) => (
-          <button key={index} onClick={button.onClick} label={button.label}>
+          <button key={index} onClick={button.onClick} title={button.label}>
             <FontAwesomeIcon icon={button.icon} />
           </button>
         ))}

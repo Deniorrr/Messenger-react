@@ -82,7 +82,7 @@ function FriendsRequests() {
   };
 
   return (
-    <div>
+    <div className={styles["friends-section"]}>
       <div className={styles["header-wrapper"]}>
         <h2>Friend requests</h2>
       </div>

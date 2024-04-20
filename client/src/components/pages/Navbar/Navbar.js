@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styles from "../../style/navbar.module.scss";
 import { SocketContext } from "../../../contexts/SocketContext";
+import transparentLogo from "../../../assets/app-logo-short.png";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -18,7 +19,17 @@ function Navbar() {
   return (
     <>
       <nav className={styles.navbar}>
-        <section id="left">Logo</section>
+        <section className={styles.logo}>
+          <p className={styles["logo-text"]}>
+            <span>Socket</span>Link
+          </p>
+          <figure>
+            <img src={transparentLogo} alt="Logo" />
+          </figure>
+        </section>
+        {/* <section className={styles.logo}>
+          
+        </section> */}
         <section id="center">
           <ul>
             <li>

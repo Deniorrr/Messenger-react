@@ -108,11 +108,11 @@ function FriendsAdd() {
     });
   };
   return (
-    <div>
+    <div className={styles["friends-section"]}>
       <div className={styles["header-wrapper"]}>
         <h2>Add friends</h2>
       </div>
-      <div className="search">
+      <div className={styles["search-form"]}>
         <input
           type="text"
           placeholder="Search"

@@ -9,11 +9,13 @@
       background-color: $color-primary-dark;
       display: flex;
       justify-content: center;
+      align-items: center;
       border: 2px solid $color-primary;
       border-radius: 10px;
       li {
         list-style-type: none;
         a {
+          text-align: center;
           padding: 0.7rem 1.2rem;
           color: #fff;
           text-decoration: none;
@@ -32,33 +34,93 @@
   }
 }
 
-.friendsList {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  padding: 10px;
-  .friendsListItem {
+.friends-section {
+  padding: 1.5rem;
+  .header-wrapper {
+    padding-left: 10px;
     display: flex;
-    align-items: center;
-    border: 2px solid $color-primary;
-    border-radius: 10px;
-    background-color: $color-primary-dark;
-    .avatar {
-      background-color: $color-primary;
-      font-size: 24px;
-      height: 2em;
-      width: 2em;
-      min-width: 2em;
-      border-radius: 50%;
-      margin: 5px;
+    margin-bottom: 15px;
+  }
+  .search-form {
+    padding-left: 10px;
+    input {
+      padding: 0.5rem;
+      border: 2px solid $color-primary;
+      background-color: $color-primary-dark2;
+      color: #fff;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 1em;
+      transition-duration: 0.2s;
+    }
+    input:focus {
+      outline: none;
+      background-color: $color-primary-dark;
+    }
+    button {
+      background-color: $color-secondary-dark;
+      color: #fff;
+      border: 2px solid $color-secondary;
+      border-radius: 5px;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition-duration: 0.2s;
+      &:hover {
+        background-color: $color-secondary;
+      }
+      font-size: 1em;
+    }
+  }
+  .friendsList {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    padding: 10px;
+    .friendsListItem {
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #333;
-    }
-    .friendActions {
-      display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid $color-primary;
+      border-radius: 10px;
+      background-color: $color-primary-dark;
+
+      .friendWrapper {
+        display: flex;
+        align-items: center;
+      }
+      .avatar {
+        background-color: $color-primary;
+        font-size: 24px;
+        height: 2em;
+        width: 2em;
+        min-width: 2em;
+        border-radius: 50%;
+        margin: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+      }
+      .friendActions {
+        display: flex;
+        flex-direction: column;
+        button {
+          background-color: $color-secondary-dark;
+          color: #fff;
+          border: 2px solid $color-secondary;
+          border-radius: 5px;
+          padding: 0.5rem;
+          margin: 0.5rem;
+          cursor: pointer;
+          transition-duration: 0.2s;
+          &:hover {
+            background-color: $color-secondary;
+          }
+          svg {
+            font-size: 1rem;
+          }
+        }
+      }
     }
   }
 }
