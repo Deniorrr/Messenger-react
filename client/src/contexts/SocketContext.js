@@ -86,6 +86,7 @@ export function SocketProvider({ children }) {
           message: message.message,
           id: message.id,
           isMyMessage: message.senderId === decodedToken.id,
+          time: message.time,
         };
       });
       setMessages(messages);

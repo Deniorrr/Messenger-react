@@ -4,7 +4,7 @@ import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { SocketContext } from "../../../contexts/SocketContext";
 
-function Messenger(props) {
+function Messenger() {
   const messagesRef = useRef(null);
   //const [messages, setMessages] = useState([]);
 
@@ -20,7 +20,6 @@ function Messenger(props) {
   const scrollToBottom = () => {
     if (!messagesRef.current) return;
     messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-    console.log("scrolling");
   };
 
   useEffect(() => {
@@ -35,14 +34,38 @@ function Messenger(props) {
     userId: 1,
   };
 
+  const getDate = (date) => {
+    return date.split("T")[0];
+  };
+
   const renderMessages = () => {
-    const elements = messages.map((x) => (
-      <MessageSingle
-        messageText={x.message}
-        isMyMessage={x.isMyMessage}
-        key={x.id}
-      />
-    ));
+    let previousDate = null; // to display date only once per day
+    let currentDate = null;
+    const elements = messages.map((x) => {
+      currentDate = getDate(x.time);
+      console.log(typeof x.time);
+      console.log(x.time);
+      if (currentDate !== previousDate) {
+        previousDate = getDate(x.time);
+        return (
+          <>
+            <div className={styles["messages-date"]}>{previousDate}</div>
+            <MessageSingle
+              messageText={x.message}
+              isMyMessage={x.isMyMessage}
+              key={x.id}
+            />
+          </>
+        );
+      }
+      return (
+        <MessageSingle
+          messageText={x.message}
+          isMyMessage={x.isMyMessage}
+          key={x.id}
+        />
+      );
+    });
     return elements;
   };
   return (

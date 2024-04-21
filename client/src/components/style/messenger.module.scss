@@ -8,6 +8,11 @@
   .friend-profile-bar {
     color: #fff;
   }
+  .messages-date {
+    text-align: center;
+    border-top: 1px solid $color-primary-dark;
+    color: #ccc;
+  }
   .messages {
     overflow: scroll;
     overflow-x: hidden;
