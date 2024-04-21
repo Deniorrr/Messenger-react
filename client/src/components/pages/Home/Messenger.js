@@ -47,13 +47,13 @@ function Messenger(props) {
   };
   return (
     <main>
-      <div className={styles.messenger}>
+      <div className={styles["messenger"]}>
         <div className={styles["friend-profile-bar"]}>
-          <div className={styles.portrait}>
+          <div className={styles["portrait"]}>
             {friendData.name[0] + friendData.surname[0]}
           </div>
         </div>
-        <div className={styles.messages} ref={messagesRef}>
+        <div className={styles["messages"]} ref={messagesRef}>
           {renderMessages()}
         </div>
         <MessageInput sendMessage={(message) => sendMessage(message)} />

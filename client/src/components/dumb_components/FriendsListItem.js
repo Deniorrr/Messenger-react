@@ -11,9 +11,9 @@ function FriendsListItem(props) {
   const buttons = props.buttons;
 
   return (
-    <div className={styles.friendsListItem}>
-      <div className={styles.friendWrapper}>
-        <div className={styles.avatarWrapper}>
+    <div className={styles["friends-list-item"]}>
+      <div className={styles["friend-wrapper"]}>
+        <div className={styles["avatar-wrapper"]}>
           <Avatar friend={props.friend} />
         </div>
         <div className={styles.personData}>
@@ -23,7 +23,7 @@ function FriendsListItem(props) {
           <p>{email}</p>
         </div>
       </div>
-      <div className={styles.friendActions}>
+      <div className={styles["friend-buttons"]}>
         {buttons.map((button, index) => (
           <button key={index} onClick={button.onClick} title={button.label}>
             <FontAwesomeIcon icon={button.icon} />

@@ -5,8 +5,8 @@ import styles from "../../style/friends.module.scss";
 function Friends() {
   return (
     <>
-      <div id={styles["navbarWrapper"]}>
-        <nav id={styles["friendsNavbar"]}>
+      <div id={styles["navbar-wrapper"]}>
+        <nav id={styles["navbar-friends"]}>
           <ul>
             <li>
               <NavLink

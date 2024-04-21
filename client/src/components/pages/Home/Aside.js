@@ -21,9 +21,6 @@ function Aside() {
         </button>
       </div>
       <ConversationList
-        // displayConversation={(conversationId) => {
-        //   props.displayConversation(conversationId);
-        // }}
         changeAsideVisibility={() => setAsideVisibility(false)}
       />
     </aside>

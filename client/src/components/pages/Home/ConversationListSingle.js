@@ -17,21 +17,20 @@ function ConversationListSingle(props) {
     <li
       onClick={() => {
         setConversationId(details.id);
-        //props.displayConversation(details.id);
       }}
-      className={props.isActive ? styles.active : ""}
+      className={props.isActive ? styles["active"] : ""}
     >
-      <div className={styles.portrait}>
+      <div className={styles["portrait"]}>
         {details.firstName[0] + details.lastName[0]}
       </div>
-      <div className={styles.details}>
+      <div className={styles["details"]}>
         <header>
-          <p className={styles.name}>
+          <p className={styles["name"]}>
             {details.firstName} {details.lastName}
           </p>
-          <p className={styles.time}>{details.time}</p>
+          <p className={styles["time"]}>{details.time}</p>
         </header>
-        <p className={styles.message}>{renderMessage()}</p>
+        <p className={styles["mesesage"]}>{renderMessage()}</p>
       </div>
     </li>
   );

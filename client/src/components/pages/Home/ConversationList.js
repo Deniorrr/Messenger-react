@@ -37,7 +37,6 @@ function ConversationList(props) {
     let elements = data.map((details) => (
       <ConversationListSingle
         key={details.id}
-        //displayConversation={(id) => changeActiveConversation(id)}
         details={details}
         isActive={details.id === activeConversationId}
       />
