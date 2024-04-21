@@ -13,6 +13,18 @@ function ConversationListSingle(props) {
       return details.senderName + ": " + details.message;
     }
   };
+
+  const renderTime = () => {
+    if (details.time === null) {
+      return "";
+    } else {
+      return (
+        details.time.split("T")[1].split(":")[0] +
+        ":" +
+        details.time.split("T")[1].split(":")[1]
+      );
+    }
+  };
   return (
     <li
       onClick={() => {
@@ -28,7 +40,7 @@ function ConversationListSingle(props) {
           <p className={styles["name"]}>
             {details.firstName} {details.lastName}
           </p>
-          <p className={styles["time"]}>{details.time}</p>
+          <p className={styles["time"]}>{renderTime()}</p>
         </header>
         <p className={styles["mesesage"]}>{renderMessage()}</p>
       </div>

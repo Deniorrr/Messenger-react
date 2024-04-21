@@ -16,6 +16,9 @@ function ConversationList(props) {
       let fullName = x.firstName + " " + x.lastName;
       return fullName.toLowerCase().includes(search.toLowerCase());
     });
+
+    filtered.sort((a, b) => new Date(b.time) - new Date(a.time));
+
     setFilteredData(filtered);
   }, [data, search]);
 

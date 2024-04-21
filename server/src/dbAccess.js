@@ -73,7 +73,7 @@ class DbAccess {
        friend.lastName,
        friendships.id AS "id",
        latest_message.senderId,
-       TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
+       latest_message.time AS "time",
        latest_message.message,
        sender.firstName AS "senderName"
         FROM users
@@ -94,7 +94,7 @@ class DbAccess {
        friend.lastName,
        friendships.id AS "id",
        latest_message.senderId,
-       TIME_FORMAT(latest_message.time, "%H:%i") AS "time",
+       latest_message.time AS "time",
        latest_message.message,
        sender.firstName AS "senderName"
         FROM users
