@@ -9,32 +9,19 @@ function ConversationList(props) {
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const activeConversationId = useContext(SocketContext).activeConversationId;
-  // const fetchConversations = useContext(SocketContext).fetchConversations;
   const data = useContext(SocketContext).conversations;
 
-  // useEffect(() => {
-  //   let filtered = data.filter((x) => {
-  //     let fullName = x.firstName + " " + x.lastName;
-  //     return fullName.toLowerCase().includes(search.toLowerCase());
-  //   });
-  //   setFilteredData(filtered);
-  // }, [data, search]);
-
-  // useEffect(() => {
-  //   fetchConversations();
-  // }, []);
-
-  //const [activeConversationId, setActiveConversationId] = useState(0);
-
-  // const changeActiveConversation = (conversationId) => {
-  //   setActiveConversationId(conversationId);
-  //   useContext(SocketContext).setActiveConversationId(conversationId);
-  //   //props.displayConversation(conversationId);
-  // };
+  useEffect(() => {
+    let filtered = data.filter((x) => {
+      let fullName = x.firstName + " " + x.lastName;
+      return fullName.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredData(filtered);
+  }, [data, search]);
 
   const renderConversationList = () => {
     if (data === null) return <div>Loading...</div>;
-    let elements = data.map((details) => (
+    let elements = filteredData.map((details) => (
       <ConversationListSingle
         key={details.id}
         details={details}
