@@ -4,6 +4,7 @@ import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { SocketContext } from "../../../contexts/SocketContext";
 import Avatar from "../../dumb_components/Avatar";
+import TitleScreen from "./TitleScreen";
 
 function Messenger() {
   const messagesRef = useRef(null);
@@ -27,8 +28,6 @@ function Messenger() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  if (conversationId < 0) return <main>Select a conversation</main>;
 
   // const friendData = {
   //   name: "Denis",
@@ -83,6 +82,9 @@ function Messenger() {
     });
     return elements;
   };
+
+  if (conversationId < 0) return <TitleScreen />;
+
   return (
     <main>
       <div className={styles["messenger"]}>
