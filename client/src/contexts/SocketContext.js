@@ -16,6 +16,7 @@ export function SocketProvider({ children }) {
   const [connectionEstablished, setConnectionEstablished] = useState(false);
   const authToken = useAuthToken();
   const [decodedToken, setDecodedToken] = useState("");
+  const [activeConversationData, setActiveConversationData] = useState({});
 
   const [socket, setSocket] = useState(null);
 
@@ -164,11 +165,19 @@ export function SocketProvider({ children }) {
     updateConversationList(activeConversationId, message, decodedToken.id);
   };
 
+  const changeActiveConversationId = (conversationId) => {
+    setActiveConversationId(conversationId);
+    setActiveConversationData(
+      conversationList.find(
+        (conversation) => conversation.id === conversationId
+      )
+    );
+    navigate("/");
+  };
+
   const x = {
-    setActiveConversationId: (conversationId) => {
-      setActiveConversationId(conversationId);
-      navigate("/");
-    },
+    activeConversationData: activeConversationData,
+    setActiveConversationId: changeActiveConversationId,
     activeConversationId: activeConversationId,
     conversations: conversationList,
     fetchConversations: fetchConversations,

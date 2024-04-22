@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../style/friends.module.scss";
+import styles from "../style/dumbComponents.module.scss";
 
 function Avatar(props) {
   const firstName = props.friend.firstName;

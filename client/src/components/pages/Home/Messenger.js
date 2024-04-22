@@ -1,8 +1,9 @@
-import { React, useEffect, useState, useContext, useRef } from "react";
+import { React, useEffect, useContext, useRef } from "react";
 import styles from "../../style/messenger.module.scss";
 import MessageSingle from "./MessageSingle";
 import MessageInput from "./MessageInput";
 import { SocketContext } from "../../../contexts/SocketContext";
+import Avatar from "../../dumb_components/Avatar";
 
 function Messenger() {
   const messagesRef = useRef(null);
@@ -11,6 +12,7 @@ function Messenger() {
   const messages = useContext(SocketContext).messages;
   const conversationId = useContext(SocketContext).activeConversationId;
   const sendMessageContext = useContext(SocketContext).sendMessage;
+  const userData = useContext(SocketContext).activeConversationData;
 
   const sendMessage = (message) => {
     if (message === "") return;
@@ -28,14 +30,29 @@ function Messenger() {
 
   if (conversationId < 0) return <main>Select a conversation</main>;
 
-  const friendData = {
-    name: "Denis",
-    surname: "Poczęty",
-    userId: 1,
-  };
+  // const friendData = {
+  //   name: "Denis",
+  //   surname: "Poczęty",
+  //   userId: 1,
+  // };
 
   const getDate = (date) => {
     return date.split("T")[0];
+  };
+
+  const renderFriendData = () => {
+    return (
+      <div className={styles["friend-data-wrapper"]}>
+        <Avatar friend={userData} />
+        <div className={styles["details"]}>
+          <header>
+            <p className={styles["name"]}>
+              {userData.firstName} {userData.lastName}
+            </p>
+          </header>
+        </div>
+      </div>
+    );
   };
 
   const renderMessages = () => {
@@ -43,8 +60,6 @@ function Messenger() {
     let currentDate = null;
     const elements = messages.map((x) => {
       currentDate = getDate(x.time);
-      console.log(typeof x.time);
-      console.log(x.time);
       if (currentDate !== previousDate) {
         previousDate = getDate(x.time);
         return (
@@ -71,11 +86,7 @@ function Messenger() {
   return (
     <main>
       <div className={styles["messenger"]}>
-        <div className={styles["friend-profile-bar"]}>
-          <div className={styles["portrait"]}>
-            {friendData.name[0] + friendData.surname[0]}
-          </div>
-        </div>
+        <div className={styles["friend-profile-bar"]}>{renderFriendData()}</div>
         <div className={styles["messages"]} ref={messagesRef}>
           {renderMessages()}
         </div>
