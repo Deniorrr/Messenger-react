@@ -1,1 +1,62 @@
 @import "./variables";
+
+.welcome-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  padding: 0 1em;
+  background-color: $color-primary;
+  .welcome-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5em;
+      .title-orange {
+        color: $color-secondary;
+      }
+      .title-blue {
+        color: $color-primary;
+      }
+      figure {
+        margin-top: 15px;
+        height: 4em;
+        img {
+          height: 100%;
+        }
+      }
+    }
+    .icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1em 0;
+      svg {
+        margin: 0 20px;
+        height: 3em;
+        color: $color-primary;
+      }
+    }
+    p {
+      text-align: center;
+      padding: 10px;
+      a {
+        color: $color-secondary;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  footer {
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+  }
+}

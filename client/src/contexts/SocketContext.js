@@ -167,6 +167,7 @@ export function SocketProvider({ children }) {
 
   const changeActiveConversationId = (conversationId) => {
     setActiveConversationId(conversationId);
+    if (conversationId === -1) return;
     setActiveConversationData(
       conversationList.find(
         (conversation) => conversation.id === conversationId

@@ -9,6 +9,9 @@ function Navbar() {
 
   const establishConnection = useContext(SocketContext).establishConnection;
 
+  const setActiveConversationId =
+    useContext(SocketContext).setActiveConversationId;
+
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
@@ -19,7 +22,10 @@ function Navbar() {
   return (
     <>
       <nav className={styles.navbar}>
-        <section className={styles.logo}>
+        <section
+          className={styles.logo}
+          onClick={() => setActiveConversationId(-1)}
+        >
           <p className={styles["logo-text"]}>
             <span>Socket</span>Link
           </p>
